@@ -1,0 +1,1605 @@
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: conditional
+                conditions:
+                  - entity: climate.bt_arbeitszimmer
+                    state_not: 'off'
+              - type: template
+                entity: climate.bt_arbeitszimmer
+                icon_color: >-
+                  {% set status =
+                  state_attr('climate.bt_arbeitszimmer','hvac_action') %} {% if
+                  status == 'heating' %} red {% else %} grey {% endif %}
+                icon: mdi:heat-wave
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: >
+                  {% set status =
+                  state_attr('climate.bt_arbeitszimmer','hvac_action') %}
+
+                  {% if status == 'heating' %}
+
+                  ha-state-icon {
+                    animation: blink 1.5s ease-in-out infinite;
+                  }
+
+                  @keyframes blink {
+                    100% {opacity: 0;}
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: transparent;
+                    --chip-background: transparent;
+                    --chip-spacing: 0px;
+                    top: 0px;
+                  }
+          - type: custom:mushroom-template-card
+            primary: Büro
+            secondary: >-
+              {{ states('sensor.temperatur_arbeitszimmer_temperatur') |
+              round(0)}} °C |  {{
+              states('sensor.temperatur_arbeitszimmer_luftfeuchtigkeit') |
+              round(0)}} %
+            icon: mdi:death-star-variant
+            entity: light.arbeitszimmer
+            tap_action:
+              action: navigate
+              navigation_path: office
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''red'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: |
+                :host {
+                    background: rgba(var(--rgb-primary-text-color), 0.025);
+                      --mush-icon-size: 76px;
+                      height: 66px;
+                      margin-left: -18px !important;
+                      display: flex;
+                      position: absolute;
+                    }
+                {% if is_state('media_player.echo_4_arbeitszimmer','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                icon: mdi:desktop-classic
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #ef5c48
+                  {% endif %}
+                entity: sensor.pc_mark
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:server
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #8f7ee7
+                  {% endif %}
+                entity: sensor.server
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:home-assistant
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #37b4c3
+                  {% endif %}
+                entity: sensor.homeassistant
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:router-wireless
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #da62ac
+                  {% endif %}
+                entity: sensor.fritzbox
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #ef5c48
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_4_arbeitszimmer
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card {
+                      transition: all 0s;
+                      --chip-box-shadow: none;
+                      --chip-background: none;
+                      --chip-spacing: 0;
+                    }
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(5)$: >
+                  {% if is_state('media_player.echo_4_arbeitszimmer','playing')
+                  %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                    top: 25px;
+                    transition: all 0s;
+                  }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              height: 102px;
+              {% if is_state('light.arbeitszimmer', 'on') %}
+                background: rgba(244, 67, 54, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: conditional
+                conditions:
+                  - entity: climate.bt_badezimmer
+                    state_not: 'off'
+              - type: template
+                entity: climate.bt_badezimmer
+                icon_color: >-
+                  {% set status =
+                  state_attr('climate.bt_badezimmer','hvac_action') %} {% if
+                  status == 'heating' %} red {% else %} grey {% endif %}
+                icon: mdi:heat-wave
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: >
+                  {% set status =
+                  state_attr('climate.bt_badezimmer','hvac_action') %}
+
+                  {% if status == 'heating' %}
+
+                  ha-state-icon {
+                    animation: blink 1.5s ease-in-out infinite;
+                  }
+
+                  @keyframes blink {
+                    100% {opacity: 0;}
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: transparent;
+                    --chip-background: transparent;
+                    --chip-spacing: 0px;
+                    top: 0px;
+                  }
+          - type: custom:mushroom-template-card
+            primary: Bad
+            secondary: >-
+              {{ states('sensor.temperatur_badezimmer_temperatur') | round(0)}}
+              °C |
+
+              {{ states('sensor.temperatur_badezimmer_luftfeuchtigkeit') |
+              round(0)}} %
+            icon: mdi:shower
+            entity: light.badezimmer
+            tap_action:
+              action: navigate
+              navigation_path: bathroom
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''pink'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: |
+                :host {
+                    background: rgba(var(--rgb-primary-text-color), 0.025);
+                      --mush-icon-size: 76px;
+                      height: 66px;
+                      margin-left: -18px !important;
+                      display: flex;
+                      position: absolute;
+                    }
+                {% if is_state('media_player.echo_dot_badezimmer','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                entity: sensor.washing_machine
+                icon: mdi:washing-machine
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #f5cd47
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                entity: sensor.dryer
+                icon: mdi:tumble-dryer
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #f18d13
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #f5cd47
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_dot_badezimmer
+                tap_action:
+                  action: more-info
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: |
+                  {% if is_state('sensor.washing_machine','on') %}
+                    ha-state-icon {
+                      animation: shake 400ms ease-in-out infinite, drum 1s infinite;
+                      transform-origin: 50% 65%;
+                  }
+                  @keyframes shake {
+                    0%, 100% { transform: rotate(4deg); }
+                    50%  { transform: rotate(-4deg); }
+                  }
+                  @keyframes drum {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 36% 74%, 31% 43%, 61% 40%, 71% 69%, 62% 78%, 36% 73%, 35% 100%, 100% 100%, 100% 0); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(2)$: |
+                  {% if is_state('sensor.dryer','on') %}
+                    ha-state-icon {
+                      animation: shake 400ms ease-in-out infinite, drum 1s infinite;
+                      transform-origin: 50% 65%;
+                  } @keyframes shake {
+                    0%, 100% { transform: rotate(4deg); }
+                    50%  { transform: rotate(-4deg); }
+                  } @keyframes drum {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 36% 74%, 31% 43%, 61% 40%, 71% 69%, 62% 78%, 36% 73%, 35% 100%, 100% 100%, 100% 0); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(3)$: >
+                  {% if is_state('media_player.echo_dot_badezimmer','playing')
+                  %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                    top: 25px;
+                    transition: all 0s;
+                  }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              height: 102px;
+              {% if is_state('light.badezimmer', 'on') %}
+                background: rgba(209, 0, 140, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+  - type: horizontal-stack
+    cards:
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Eingang
+            secondary: >-
+              {{ states('sensor.temperatur_eingangsbereich_temperatur') |
+              round(0)}} °C | 
+
+              {{ states('sensor.temperatur_eingangsbereich_luftfeuchtigkeit') |
+              round(0)}} %
+            icon: mdi:door-open
+            badge_icon: >
+              {% if
+              is_state('binary_sensor.bewegungsmelder_eingangsbereich_bewegung',
+              'on') %}
+                mdi:motion-sensor
+              {% else %}  
+                mdi:motion-sensor-off
+              {% endif %}
+            badge_color: >
+              {% if
+              is_state('binary_sensor.bewegungsmelder_eingangsbereich_bewegung',
+              'on') %}
+                green
+              {% else %}  
+                grey
+              {% endif %}
+            entity: light.deckenlicht_eingang
+            tap_action:
+              action: navigate
+              navigation_path: entrance
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''#2abb7f'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: |
+                :host {
+                  background: rgba(var(--rgb-primary-text-color), 0.025);
+                  --mush-icon-size: 76px;
+                  height: 66px;
+                  margin-left: -18px !important;
+                  display: flex;
+                  position: absolute;
+                }
+                mushroom-badge-icon {
+                  top: 10px
+                }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              width: auto;
+              height: 102px;
+              {% if is_state('light.deckenlicht_eingang', 'on') %}
+                background: rgba(42, 187, 127, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Flur
+            secondary: >-
+              {{ states('sensor.temperatur_wohnzimmer_temperatur') | round(0)}}
+              °C | 
+
+              {{ states('sensor.temperatur_wohnzimmer_luftfeuchtigkeit') |
+              round(0)}} %
+            icon: mdi:highway
+            badge_icon: >
+              {% if is_state('binary_sensor.bewegungsmelder_flur_bewegung',
+              'on') %}
+                mdi:motion-sensor
+              {% else %}  
+                mdi:motion-sensor-off
+              {% endif %}
+            badge_color: >
+              {% if is_state('binary_sensor.bewegungsmelder_flur_bewegung',
+              'on') %}
+                green
+              {% else %}  
+                grey
+              {% endif %}
+            entity: light.flur
+            tap_action:
+              action: navigate
+              navigation_path: hallway
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''#388bff'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: |
+                :host {
+                    background: rgba(var(--rgb-primary-text-color), 0.025);
+                      --mush-icon-size: 76px;
+                      height: 66px;
+                      margin-left: -18px !important;
+                    }
+                mushroom-badge-icon {
+                  top: 10px
+                }
+                {% if is_state('media_player.echo_dot_flur','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #ef5c48
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_dot_flur
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card {
+                      transition: all 0s;
+                      --chip-box-shadow: none;
+                      --chip-background: none;
+                      --chip-spacing: 0;
+                    }
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: |
+                  {% if is_state('media_player.echo_dot_flur','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                    transition: all 0s;
+                  top: -5px;
+                  }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              height: 102px;
+              {% if is_state('light.flur', 'on') %}
+                background: rgba(56, 139, 255, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+  - type: horizontal-stack
+    cards:
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: conditional
+                conditions:
+                  - entity: climate.bt_gastebad
+                    state_not: 'off'
+              - type: template
+                entity: climate.bt_gastebad
+                icon_color: >-
+                  {% set status =
+                  state_attr('climate.bt_gastebad','hvac_action') %} {% if
+                  status == 'heating' %} red {% else %} grey {% endif %}
+                icon: mdi:heat-wave
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: >
+                  {% set status =
+                  state_attr('climate.bt_gastebad','hvac_action') %}
+
+                  {% if status == 'heating' %}
+
+                  ha-state-icon {
+                    animation: blink 1.5s ease-in-out infinite;
+                  }
+
+                  @keyframes blink {
+                    100% {opacity: 0;}
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: transparent;
+                    --chip-background: transparent;
+                    --chip-spacing: 0px;
+                    top: 0px;
+                  }
+          - type: custom:mushroom-template-card
+            primary: Gästebad
+            secondary: >-
+              {{ states('sensor.temperatur_gastebad_temperatur') | round(0)}} °C
+              | 
+
+              {{ states('sensor.temperatur_gastebad_luftfeuchtigkeit') |
+              round(0)}} %
+            icon: mdi:toilet
+            entity: light.gastebad
+            tap_action:
+              action: navigate
+              navigation_path: toilet
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''#82b536'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: |
+                :host {
+                    background: rgba(var(--rgb-primary-text-color), 0.025);
+                      --mush-icon-size: 76px;
+                      height: 66px;
+                      margin-left: -18px !important;
+                      display: flex;
+                      position: absolute;
+                    }
+                {% if is_state('media_player.echo_dot_gastebad','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #f5cd47
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_dot_gastebad
+                tap_action:
+                  action: more-info
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: |
+                  {% if is_state('media_player.echo_dot_gastebad','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                    transition: all 0s;
+                    top: 25px;
+                  }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              width: auto;
+              height: 102px;
+              {% if is_state('light.gastebad', 'on') %}
+                background: rgba(130, 181, 54, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: conditional
+                conditions:
+                  - entity: climate.bt_kinderzimmer
+                    state_not: 'off'
+              - type: template
+                entity: climate.bt_kinderzimmer
+                icon_color: >-
+                  {% set status =
+                  state_attr('climate.bt_kinderzimmer','hvac_action') %} {% if
+                  status == 'heating' %} red {% else %} grey {% endif %}
+                icon: mdi:heat-wave
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: >
+                  {% set status =
+                  state_attr('climate.bt_kinderzimmer','hvac_action') %}
+
+                  {% if status == 'heating' %}
+
+                  ha-state-icon {
+                    animation: blink 1.5s ease-in-out infinite;
+                  }
+
+                  @keyframes blink {
+                    100% {opacity: 0;}
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: transparent;
+                    --chip-background: transparent;
+                    --chip-spacing: 0px;
+                    top: 0px;
+                  }
+          - type: custom:mushroom-template-card
+            primary: Feli
+            secondary: >-
+              {{ states('sensor.temperatur_kinderzimmer_temperatur') |
+              round(0)}} °C | 
+
+              {{ states('sensor.temperatur_kinderzimmer_luftfeuchtigkeit') |
+              round(0)}} %
+            icon: mdi:unicorn-variant
+            entity: light.kinderzimmer
+            tap_action:
+              action: navigate
+              navigation_path: feli
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''#37b4c3'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: >
+                :host {
+                    background: rgba(var(--rgb-primary-text-color), 0.025);
+                      --mush-icon-size: 76px;
+                      height: 66px;
+                      margin-left: -18px !important;
+                      display: flex;
+                      position: absolute;
+                    }
+                {% if is_state('media_player.echo_dot_kinderzimmer','playing')
+                %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #f5cd47
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_dot_kinderzimmer
+                tap_action:
+                  action: more-info
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: >
+                  {% if is_state('media_player.echo_dot_kinderzimmer','playing')
+                  %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                    transition: all 0s;
+                    top: 25px;
+                  }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              width: auto;
+              height: 102px;
+              {% if is_state('light.kinderzimmer', 'on') %}
+                background: rgba(55, 180, 95, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+  - type: horizontal-stack
+    cards:
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: conditional
+                conditions:
+                  - entity: climate.bt_kuche
+                    state_not: 'off'
+              - type: template
+                entity: climate.bt_kuche
+                icon_color: >-
+                  {% set status = state_attr('climate.bt_kuche','hvac_action')
+                  %} {% if status == 'heating' %} red {% else %} grey {% endif
+                  %}
+                icon: mdi:heat-wave
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: >
+                  {% set status = state_attr('climate.bt_kuche','hvac_action')
+                  %}
+
+                  {% if status == 'heating' %}
+
+                  ha-state-icon {
+                    animation: blink 1.5s ease-in-out infinite;
+                  }
+
+                  @keyframes blink {
+                    100% {opacity: 0;}
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: transparent;
+                    --chip-background: transparent;
+                    --chip-spacing: 0px;
+                    top: 0px;
+                  }
+          - type: custom:mushroom-template-card
+            primary: Küche
+            secondary: >-
+              {{ states('sensor.temperatur_kuche_temperatur') | round(0)}} °C | 
+
+              {{ states('sensor.temperatur_kuche_luftfeuchtigkeit') | round(0)}}
+              %
+            icon: mdi:silverware-variant
+            badge_icon: >
+              {% if is_state('binary_sensor.bewegungsmelder_kuche_bewegung',
+              'on') %}
+                mdi:motion-sensor
+              {% else %}  
+                mdi:motion-sensor-off
+              {% endif %}
+            badge_color: >
+              {% if
+              is_state('binary_sensor.bewegungsmelder_kuche_bewegung','on') %}
+                green
+              {% else %}  
+                grey
+              {% endif %}
+            entity: light.kuche
+            tap_action:
+              action: navigate
+              navigation_path: kitchen
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''#f18d13'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: |
+                :host {
+                    background: rgba(var(--rgb-primary-text-color), 0.025);
+                      --mush-icon-size: 76px;
+                      height: 66px;
+                      margin-left: -18px !important;
+                      display: flex;
+                      position: absolute;
+                    }
+                  mushroom-badge-icon {
+                    top: 10px
+                  }
+                {% if is_state('media_player.echo_4_kuche','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                entity: sensor.microwave
+                icon: mdi:microwave
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #ef5c48
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                entity: sensor.dishwasher
+                icon: mdi:dishwasher
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #37b4c3
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                entity: sensor.fridge
+                icon: mdi:fridge
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #388bff
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #f5cd47
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_4_kuche
+                tap_action:
+                  action: more-info
+              - type: conditional
+                conditions:
+                  - entity: climate.bt_kuche
+                    state_not: 'off'
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: |
+                  {% if is_state('sensor.microwave','on') %}
+                    ha-state-icon:before {
+                      content: "";
+                      position: absolute;
+                      width: 25%;
+                      height: 25%;
+                      margin: 10%;
+                      animation: cook 1s linear infinite;
+                  }
+                  @keyframes cook { 
+                    0%, 100% { background: linear-gradient(90deg, white 0%, transparent 50%, transparent 100%); }
+                    33% { background: linear-gradient(90deg, transparent 0%, white 50%, transparent 100%); }
+                    66% { background: linear-gradient(90deg, transparent 0%, transparent 50%, white 100%); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(2)$: |
+                  {% if is_state('sensor.dishwasher','on') %}
+                    ha-state-icon {
+                      animation: bounce 1.5s ease-in-out infinite, wash 1s ease-in-out infinite;
+                      transform-origin: 50% 75%;
+                  }
+                  @keyframes bounce {
+                    0%, 20%, 50%, 80%, 100% {transform: translateY(0); } 
+                    40% { transform: translateY(-1.2px) rotate(5deg); } 
+                    60% { transform: translateY(-1.1px) rotate(-4deg); } 
+                  } 
+                  @keyframes wash {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 36% 74%, 31% 43%, 61% 40%, 71% 69%, 62% 78%, 36% 73%, 35% 100%, 100% 100%, 100% 0); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(3)$: |
+                  {% if is_state('sensor.fridge','on') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                      --shape-animation: heart 1.3s ease-out infinite both;
+                  }
+                  @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  @keyframes heart {
+                    0% { box-shadow: 0 0 0 0 rgba(var(--rgb-red), 0.2); }
+                    10% { box-shadow: 0 0 5px 5px transparent; }
+                    17% { box-shadow: 0 0 0 0 rgba(var(--rgb-red), 0.2); }
+                    33% { box-shadow: 0 0 5px 5px transparent; }
+                    60% { box-shadow: 0 0 0 0 rgba(var(--rgb-red), 0.2); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(4)$: |
+                  {% if is_state('media_player.echo_4_kuche','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                    transition: all 0s;
+                    top: 25px;
+                  }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              width: auto;
+              height: 102px;
+              {% if is_state('light.kuche', 'on') %}
+                background: rgba(241, 141, 19, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: conditional
+                conditions:
+                  - entity: climate.bt_schlafzimmer
+                    state_not: 'off'
+              - type: template
+                entity: climate.bt_schlafzimmer
+                icon_color: >-
+                  {% set status =
+                  state_attr('climate.bt_schlafzimmer','hvac_action') %} {% if
+                  status == 'heating' %} red {% else %} grey {% endif %}
+                icon: mdi:heat-wave
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: >
+                  {% set status =
+                  state_attr('climate.bt_schlafzimmer','hvac_action') %}
+
+                  {% if status == 'heating' %}
+
+                  ha-state-icon {
+                    animation: blink 1.5s ease-in-out infinite;
+                  }
+
+                  @keyframes blink {
+                    100% {opacity: 0;}
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: transparent;
+                    --chip-background: transparent;
+                    --chip-spacing: 0px;
+                    top: 0px;
+                  }
+          - type: custom:mushroom-template-card
+            primary: Schlafen
+            secondary: >-
+              {{ states('sensor.temperatur_schlafzimmer_temperatur') |
+              round(0)}} °C |  {{
+              states('sensor.temperatur_schlafzimmer_luftfeuchtigkeit') |
+              round(0)}} %
+            icon: mdi:sleep
+            entity: light.schlafzimmer
+            tap_action:
+              action: navigate
+              navigation_path: bedroom
+            double_tap_action:
+              action: toggle
+            icon_color: '{{ ''#da62ac'' if is_state(entity, ''on'') else ''disabled'' }}'
+            fill_container: true
+            layout: horizontal
+            multiline_secondary: false
+            card_mod:
+              style: |
+                :host {
+                    background: rgba(var(--rgb-primary-text-color), 0.025);
+                      --mush-icon-size: 76px;
+                      height: 66px;
+                      margin-left: -18px !important;
+                      display: flex;
+                      position: absolute;
+                    }
+                {% if is_state('media_player.echo_dot_wecker_mark','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                icon: mdi:air-humidifier
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #FFFF66
+                  {% endif %}
+                entity: sensor.dehumidifier_bedroom
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:air-filter
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #FFB366
+                  {% endif %}
+                entity: sensor.airpurifier_bedroom
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: phu:echo-dot-gen-4-clock
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #ef5c48
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_dot_wecker_mark
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: phu:firetv
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #f5cd47
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.fire_tv_192_168_178_20
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:television
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #2abb7f
+                  {% endif %}
+                entity: sensor.tvbedroom
+                tap_action:
+                  action: none
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(3)$: >
+                  {% if is_state('media_player.echo_dot_wecker_mark','playing')
+                  %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+
+                  {% else %}
+
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(5)$: |
+                  {% if is_state('sensor.tvbedroom','on') %}
+                    ha-state-icon {
+                      animation: flicker 1s linear 1s infinite alternate;
+                  } @keyframes flicker {
+                      0%, 31.98%, 32.98%, 34.98%, 36.98%, 39.98%, 67.98%, 68.98%, 95.98%, 96.98%, 97.98%, 98.98%, 100% { opacity: 0.6; }
+                      32%, 33%, 35%, 36%, 37%, 40%, 68%, 69%, 96%, 97%, 98%, 99% { opacity: 1; }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                    transition: all 0s;
+                    top: 25px;
+                  }
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              height: 102px;
+              {% if is_state('light.schlafzimmer', 'on') %}
+                background: rgba(244, 67, 54, 0.1);
+              {% endif %}
+            }
+            :host {
+              background: var(--card-background-color);
+              border-radius: var(--ha-card-border-radius);
+            }
+  - type: custom:stack-in-card
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: conditional
+            conditions:
+              - entity: climate.bt_wohnzimmer
+                state_not: 'off'
+          - type: template
+            entity: climate.bt_wohnzimmer
+            icon_color: >-
+              {% set status = state_attr('climate.bt_wohnzimmer','hvac_action')
+              %} {% if status == 'heating' %} red {% else %} grey {% endif %}
+            icon: mdi:heat-wave
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+        alignment: end
+        card_mod:
+          style:
+            mushroom-template-chip:nth-child(1)$: >
+              {% set status = state_attr('climate.bt_wohnzimmer','hvac_action')
+              %}
+
+              {% if status == 'heating' %}
+
+              ha-state-icon {
+                animation: blink 1.5s ease-in-out infinite;
+              }
+
+              @keyframes blink {
+                100% {opacity: 0;}
+              }
+
+              {% else %}
+
+
+              {% endif %}
+            .: |
+              ha-card {
+                --chip-box-shadow: transparent;
+                --chip-background: transparent;
+                --chip-spacing: 0px;
+                top: 0px;
+              }
+      - type: custom:mushroom-template-card
+        primary: Wohnzimmer
+        secondary: >-
+          {{ states('sensor.temperatur_wohnzimmer_temperatur') | round(0)}} °C
+          | 
+
+          {{ states('sensor.temperatur_wohnzimmer_luftfeuchtigkeit') |
+          round(0)}} %
+        icon: mdi:sofa
+        entity: light.wohnzimmer
+        tap_action:
+          action: navigate
+          navigation_path: lounge
+        double_tap_action:
+          action: toggle
+        icon_color: '{{ ''#f5cd47'' if is_state(entity, ''on'') else ''disabled'' }}'
+        fill_container: true
+        layout: horizontal
+        multiline_secondary: false
+        card_mod:
+          style: |
+            :host {
+                background: rgba(var(--rgb-primary-text-color), 0.025);
+                  --mush-icon-size: 76px;
+                  height: 66px;
+                  margin-left: -18px !important;
+                  display: flex;
+                  position: absolute;
+                }
+            {% if is_state('media_player.heimkino','playing') %}
+                ha-state-icon {
+                  animation: beat 1.3s ease-out infinite both;
+                  transform-origin: 50% 60%;
+              } @keyframes beat {
+                0% { transform: scale(1); }
+                10% { transform: scale(1.1); }
+                17% { transform: scale(1.05); }
+                33% { transform: scale(1.25); }
+                60% { transform: scale(1); }
+              }
+              {% else %}
+
+              {% endif %}
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: template
+            icon: phu:echo-studio-2nd
+            icon_color: |
+              {% if is_state(entity, 'playing') %}
+              #2abb7f
+              {% elif is_state(entity, 'standby') %}
+              #f5cd47
+              {% elif is_state(entity, 'idle') %}
+              #f5cd47
+              {% elif is_state(entity, 'paused') %}
+              #f5cd47
+              {% else %}
+              grey
+              {% endif %}
+            entity: media_player.heimkino
+            tap_action:
+              action: more-info
+          - type: template
+            icon: phu:echo-studio-2nd
+            icon_color: |
+              {% if is_state(entity, 'playing') %}
+              #2abb7f
+              {% elif is_state(entity, 'standby') %}
+              #f5cd47
+              {% elif is_state(entity, 'idle') %}
+              #f5cd47
+              {% elif is_state(entity, 'paused') %}
+              #f5cd47
+              {% else %}
+              grey
+              {% endif %}
+            entity: media_player.heimkino
+            tap_action:
+              action: more-info
+          - type: template
+            icon: phu:firetv
+            icon_color: |
+              {% if is_state(entity, 'playing') %}
+              #2abb7f
+              {% elif is_state(entity, 'standby') %}
+              #f5cd47
+              {% elif is_state(entity, 'idle') %}
+              #f5cd47
+              {% elif is_state(entity, 'paused') %}
+              #ef5c48
+              {% else %}
+              grey
+              {% endif %}
+            entity: media_player.fire_tv_192_168_178_21
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:television
+            icon_color: |
+              {% if is_state(entity, 'off') %}
+              grey
+              {% else %}
+              #2abb7f
+              {% endif %}
+            entity: sensor.tvwohnzimmer
+            tap_action:
+              action: more-info
+        alignment: end
+        card_mod:
+          style:
+            mushroom-template-chip:nth-child(1)$: |
+              {% if is_state('media_player.heimkino','playing') %}
+                ha-state-icon {
+                  animation: beat 1.3s ease-out infinite both;
+                  transform-origin: 50% 60%;
+              } @keyframes beat {
+                0% { transform: scale(1); }
+                10% { transform: scale(1.1); }
+                17% { transform: scale(1.05); }
+                33% { transform: scale(1.25); }
+                60% { transform: scale(1); }
+              }
+              {% else %}
+
+              {% endif %}
+            mushroom-template-chip:nth-child(2)$: |
+              {% if is_state('media_player.heimkino','playing') %}
+                ha-state-icon {
+                  animation: beat 1.3s ease-out infinite both;
+                  transform-origin: 50% 60%;
+              } @keyframes beat {
+                0% { transform: scale(1); }
+                10% { transform: scale(1.1); }
+                17% { transform: scale(1.05); }
+                33% { transform: scale(1.25); }
+                60% { transform: scale(1); }
+              }
+              {% else %}
+
+              {% endif %}
+            mushroom-template-chip:nth-child(4)$: |
+              {% if is_state('sensor.tvwohnzimmer','on') %}
+                ha-state-icon {
+                  animation: flicker 1s linear 1s infinite alternate;
+              } @keyframes flicker {
+                  0%, 31.98%, 32.98%, 34.98%, 36.98%, 39.98%, 67.98%, 68.98%, 95.98%, 96.98%, 97.98%, 98.98%, 100% { opacity: 0.6; }
+                  32%, 33%, 35%, 36%, 37%, 40%, 68%, 69%, 96%, 97%, 98%, 99% { opacity: 1; }
+              }
+              {% else %}
+
+              {% endif %}
+            .: |
+              ha-card {
+                --chip-box-shadow: none;
+                --chip-background: none;
+                --chip-spacing: 0;
+                transition: all 0s;
+                top: 25px;
+              }
+    card_mod:
+      style: |
+        ha-card {
+          transition: all 0s;
+          width: auto;
+          height: 102px;
+          {% if is_state('light.wohnzimmer', 'on') %}
+            background: rgba(245, 205, 71, 0.1);
+          {% endif %}
+        }
+        :host {
+          background: var(--card-background-color);
+          border-radius: var(--ha-card-border-radius);
+        }
