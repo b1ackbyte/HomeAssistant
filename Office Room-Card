@@ -1,0 +1,436 @@
+type: custom:stack-in-card
+cards:
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: conditional
+        conditions:
+          - entity: climate.bt_arbeitszimmer
+            state_not: 'off'
+      - type: template
+        entity: climate.bt_arbeitszimmer
+        icon_color: >-
+          {% set status = state_attr('climate.bt_arbeitszimmer','hvac_action')
+          %} {% if status == 'heating' %} red {% else %} grey {% endif %}
+        icon: mdi:heat-wave
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+      - type: entity
+        icon: mdi:thermometer
+        icon_color: '#ff33ff'
+        use_entity_picture: false
+        content: n/a
+        entity: sensor.temperatur_arbeitszimmer_temperatur
+      - type: entity
+        icon: mdi:water-percent
+        icon_color: '#3399ff'
+        use_entity_picture: false
+        content: n/a
+        entity: sensor.temperatur_arbeitszimmer_luftfeuchtigkeit
+    alignment: end
+    card_mod:
+      style:
+        mushroom-template-chip:nth-child(1)$: |
+          {% set status = state_attr('climate.bt_arbeitszimmer','hvac_action')
+          %} {% if status == 'heating' %} ha-state-icon {
+            animation: blink 1.5s ease-in-out infinite;
+          } @keyframes blink {
+            100% {opacity: 0;}
+          } {% else %}
+
+          {% endif %} }
+        .: |
+          ha-card {
+            --chip-box-shadow: transparent;
+            --chip-background: transparent;
+            --chip-spacing: 0;
+            padding-top: 5px;
+          }
+  - type: custom:mushroom-template-card
+    primary: ‎ ‎ Büro
+    icon: mdi:death-star-variant
+    tap_action:
+      action: none
+    card_mod:
+      style:
+        mushroom-state-info$: |
+          .primary {
+            font-size: 20px !important;
+            position: absolute;
+            top: 0px;
+            left: 75px;
+            overflow: visible !important;
+            white-space: normal !important;
+          }
+        mushroom-shape-icon$: |
+          .shape {
+            position: relative;
+            left: -30px;
+            top: -0px;
+            height: 20px;
+            {% if is_state('light.arbeitszimmer', 'on') %}
+               --shape-color: rgba(var(--rgb-orange), 0.25);
+               --icon-color: rgba(var(--rgb-white), 1);
+            {% endif %}
+          }
+        .: |
+          :host {
+            --mush-icon-size: 120px;
+            --primary-text-color: #a0a0a0
+          }
+          ha-card {
+            height: 75px !important;
+          }
+  - type: custom:stack-in-card
+    cards:
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                icon: mdi:desktop-classic
+                icon_color: |2-
+                    {% if is_state(entity, 'off') %}
+                    grey
+                    {% else %}
+                    #ef5c48
+                    {% endif %}
+                entity: sensor.pc_mark
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:server
+                icon_color: |2-
+                    {% if is_state(entity, 'off') %}
+                    grey
+                    {% else %}
+                    #8f7ee7
+                    {% endif %}
+                entity: sensor.server
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:home-assistant
+                icon_color: |2-
+                    {% if is_state(entity, 'off') %}
+                    grey
+                    {% else %}
+                    #37b4c3
+                    {% endif %}
+                entity: sensor.homeassistant
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: mdi:router-wireless
+                icon_color: |2-
+                    {% if is_state(entity, 'off') %}
+                    grey
+                    {% else %}
+                    #da62ac
+                    {% endif %}
+                entity: sensor.fritzbox
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #ef5c48
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_4_arbeitszimmer
+                tap_action:
+                  action: more-info
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: |
+                  {% if is_state('sensor.pc_mark','on') %}
+                  ha-icon {
+                    animation: shake 800ms ease-in-out infinite, drum 2s ease infinite;
+                  }
+                  @keyframes shake {
+                    0%, 100% { transform: translate(0, 0) rotate(0); }
+                    20%  { transform: translate(0.4px, -0.4px) rotate(-4deg); }
+                    40%  { transform: translate(-0.4px, 0.4px) rotate(4deg); }
+                    60%  { transform: translate(0.4px, 0.4px) rotate(-4deg); }
+                    80%  { transform: translate(-0.4px, -0.4px) rotate(4deg); }
+                  }
+                  @keyframes drum {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 34% 68%, 60% 41%, 71% 56%, 65% 74%, 47% 79%, 32% 69%, 35% 100%, 100% 100%, 100% 0); }
+                  }  
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(2)$: |
+                  {% if is_state('sensor.server','on') %}
+                  ha-icon {
+                    animation: shake 800ms ease-in-out infinite, drum 1s infinite;
+                    transform-origin: 100% 100%;
+                  }
+                  @keyframes shake {
+                    0%, 100% { transform: rotate(4deg); }
+                    50%  { transform: rotate(-4deg); }
+                  }
+                  @keyframes drum {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 36% 74%, 31% 43%, 61% 40%, 71% 69%, 62% 78%, 36% 73%, 35% 100%, 100% 100%, 100% 0); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(3)$: |
+                  {% if is_state('sensor.homeassistant','on') %}
+                  ha-icon {
+                    animation: shake 800ms ease-in-out infinite, drum 1s infinite;
+                    transform-origin: 100% 100%;
+                  }
+                  @keyframes shake {
+                    0%, 100% { transform: rotate(4deg); }
+                    50%  { transform: rotate(-4deg); }
+                  }
+                  @keyframes drum {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 36% 74%, 31% 43%, 61% 40%, 71% 69%, 62% 78%, 36% 73%, 35% 100%, 100% 100%, 100% 0); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(4)$: |
+                  {% if is_state('sensor.fritzbox','on') %}
+                  ha-icon {
+                    animation: shake 800ms ease-in-out infinite, drum 1s infinite;
+                    transform-origin: 100% 100%;
+                  }
+                  @keyframes shake {
+                    0%, 100% { transform: rotate(4deg); }
+                    50%  { transform: rotate(-4deg); }
+                  }
+                  @keyframes drum {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 36% 74%, 31% 43%, 61% 40%, 71% 69%, 62% 78%, 36% 73%, 35% 100%, 100% 100%, 100% 0); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(5)$: >
+                  {% if is_state('media_player.echo_4_arbeitszimmer','playing')
+                  %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+
+                  {% else %}
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                  }
+          - type: entities
+            entities:
+              - type: custom:fold-entity-row
+                head:
+                  type: custom:mushroom-entity-card
+                  entity: light.arbeitszimmer
+                  name: Alle Lampen
+                  icon: mdi:ceiling-light-multiple
+                  icon_color: '#ff5f1f'
+                  tap_action:
+                    action: toggle
+                padding: 0
+                entities:
+                  - type: custom:auto-entities
+                    filter:
+                      include:
+                        - group: light.arbeitszimmer
+                          options:
+                            type: custom:mushroom-entity-card
+                            icon: ''
+                            icon_color: '#ff5f1f'
+                            tap_action:
+                              action: toggle
+                    card:
+                      type: custom:layout-card
+                      cards: []
+                      layout_type: masonry
+                    sort:
+                      method: friendly_name
+                card_mod:
+                  style: |
+                    :host {
+                      --masonry-view-card-margin: -12px 8px 0px 8px; 
+                      --ha-card-border-width: 0;
+                      --ha-card-background: none;
+                      --ha-card-box-shadow: 0;
+                    }
+            card_mod:
+              style:
+                fold-entity-row$: |
+                  ha-icon {
+                    background: none !important;
+                    margin-right: 24px !important;
+                    --toggle-icon-width: 21px !important;
+                    color: rgb(var(--rgb-disabled-color));
+                  }
+                .: |
+                  .card-content {
+                    padding: 0;
+                  }
+          - type: custom:stack-in-card
+            cards:
+              - type: custom:layout-card
+                layout_type: custom:grid-layout
+                layout:
+                  grid-template-columns: auto 33px
+                  margin: '-4px -4px -8px -4px;'
+              - type: custom:simple-thermostat
+                style: |
+                  ha-card {
+                    --st-spacing: 0px;
+                  }
+                  ha-card .current--value {
+                    color: #ffffff;
+                  }
+                  header {
+                    margin-bottom: 10px !important;
+                    padding-bottom: 0px !important;
+                  }
+                  ha-card .thermostat-trigger { 
+                    color: #6f6f6f;
+                  }
+                .: |
+                  ha-card {
+                  --ha-card-box-shadow: none;
+                  --ha-card-padding-top: 5px;
+                  --ha-card-background: transparent;
+                  }
+                entity: climate.bt_arbeitszimmer
+                header:
+                  name: false
+                  icon: false
+                decimals: '1'
+                fallback: 'Off'
+                hide:
+                  temperature: true
+                  state: true
+                layout:
+                  mode:
+                    names: false
+                    icons: false
+                    headings: false
+                  step: row
+                step_size: '0.5'
+                control:
+                  hvac:
+                    'off': false
+                    heat: false
+                    cool: false
+                    heat_cool: false
+            card_mod:
+              style: |
+                ha-card {
+                --ha-card-box-shadow: none;
+                --ha-card-background: transparent;
+                }
+      - type: custom:simple-thermostat
+        style: |
+          ha-card {
+            --st-font-size-toggle-label: 6px
+            --st-spacing: 0px;
+            --st-default-spacing: 0px;
+            --st-mode-background: #2d2d2d;
+            margin-left: 12px;
+            margin-right: 12px;
+          }
+        entity: climate.bt_arbeitszimmer
+        header: false
+        setpoints: false
+        hide:
+          temperature: true
+          state: true
+        layout:
+          mode:
+            headings: false
+            icons: true
+            names: false
+          step: row
+        control:
+          hvac:
+            'off':
+              name: Power
+            heat:
+              name: Heat
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-box-shadow: none;
+            --ha-card-padding-top: 0px;
+            --ha-card-background: transparent;
+            }
+            .mode-item:nth-child(1).active {
+              background: #575d66 !important;
+            }
+            .mode-item:nth-child(4).active {
+              background: #ff4433 !important;
+            }
+            .mode-item:nth-child(3).active {
+              background: #34cfeb !important;
+            }
+            .mode-item:nth-child(2).active {
+              background: linear-gradient(135deg, rgba(0,206,255,1) 15%, rgb(203 115 237) 50%, rgba(255,68,51,1) 85%) !important;
+            }
+      - type: custom:battery-state-card
+        entities:
+          - entity: sensor.heizung_arbeitszimmer_batterie
+            name: Batterie Thermostat
+            tap_action:
+              action: none
+          - entity: sensor.temperatur_arbeitszimmer_batterie
+            name: Batterie Temperatursensor
+            tap_action:
+              action: none
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-box-shadow: none;
+            --ha-card-padding-top: 5px;
+            --ha-card-background: transparent;
+            }
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.temperatur_arbeitszimmer_temperatur
+            name: Temperatur
+            color: '#ff33ff'
+          - entity: sensor.temperatur_arbeitszimmer_luftfeuchtigkeit
+            name: Luftfeuchtigkeit
+            color: '#3399ff'
+            y_axis: secondary
+        hours_to_show: 48
+        line_width: 3
+        font_size: 50
+        animate: true
+        show:
+          name: false
+          icon: false
+          labels: true
+          state: false
+          legend: false
+          fill: fade
