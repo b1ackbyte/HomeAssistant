@@ -1,0 +1,9 @@
+type: custom:mushroom-chips-card
+chips:
+  - type: back
+card_mod:
+  style: |
+    :host {
+      --ha-card-background: #FF6666;
+      --mush-card-primary-font-size: 34px;
+    }
