@@ -1,0 +1,131 @@
+type: custom:stack-in-card
+cards:
+  - type: custom:layout-card
+    layout_type: masonry
+    layout: {}
+    cards:
+      - type: custom:mushroom-template-card
+        primary: ‎ ‎ Büro
+        secondary: >-
+          {{ states("sensor.temperatur_arbeitszimmer_temperatur") | round(0) }}
+          °C
+        icon: mdi:death-star-variant
+        entity: light.arbeitszimmer
+        tap_action:
+          action: none
+        icon_color: ''
+        fill_container: true
+        layout: horizontal
+        multiline_secondary: false
+        card_mod:
+          style:
+            mushroom-state-info$: |
+              .primary {
+                font-size: 20px !important;
+                position: absolute;
+                top: 0px;
+                left: 75px;
+                overflow: visible !important;
+                white-space: normal !important;
+              }
+            mushroom-shape-icon$: |
+              .shape {
+                position: relative;
+                left: -30px;
+                top: -0px;
+                height: 20px;
+                {% if is_state('light.arbeitszimmer', 'on') %}
+                   --shape-color: rgba(var(--rgb-orange), 0.25);
+                   --icon-color: rgba(var(--rgb-white), 1);
+                {% endif %}
+              }
+            .: |
+              :host {
+                --mush-icon-size: 120px;
+                --primary-text-color: #a0a0a0
+              }
+
+              ha-card {
+                transition: all 0s;
+                height: 75px !important;
+              --ha-card-box-shadow: none; --ha-card-background:
+              rgba(var(--rgb-primary-text-color), 0.025);    
+
+              }
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                entity: light.arbeitszimmer
+                icon: |-
+                  {% if is_state('light.arbeitszimmer','on') %}
+                    mdi:lightbulb-on
+                  {% else %}
+                    mdi:lightbulb-off
+                  {% endif %}
+                icon_color: '{{ ''amber'' if is_state(entity, ''on'') else ''grey'' }}'
+                card_mod:
+                  style: |
+                    ha-card {
+                      --chip-icon-size: 36px;
+                      --chip-height: 36px;
+                      --chip-box-shadow: none;
+                      --chip-background: none;
+                      right: 10px;
+                      transition: all 0s;
+                      }
+                    ha-card:after {
+                      {% set lights_on = (expand(states.light.arbeitszimmer) | selectattr('state', 'eq', 'on') | list | count) %}
+                      {% if lights_on > 0 %}
+                        content: "{{ lights_on }}";
+                      {% endif %}
+                      position: absolute;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      background: rgb(var(--rgb-amber));
+                      color: var(--card-background-color);
+                      font-weight: bolder;
+                      border-radius: 50%;
+                      top: -2px;
+                      right: -5px;
+                      width: 12px;
+                      height: 12px;
+                      font-size: 11px; 
+                    }
+            alignment: end
+      - entity: light.schreibtisch_lampe
+        name: Schreibtischlampe
+        type: custom:mushroom-light-card
+        icon_color: '#3cb371'
+        icon: mdi:desk-lamp
+        show_brightness_control: true
+        show_color_control: true
+        use_light_color: false
+        collapsible_controls: true
+        show_color_temp_control: true
+        card_mod:
+          style: |
+            ha-card:active {
+              transform: scale(0.975);
+              transition: 0s;
+            }
+      - entity: light.deckenlicht_arbeitszimmer
+        name: Deckenlicht
+        type: custom:mushroom-light-card
+        icon_color: '#3cb371'
+        icon: mdi:ceiling-light
+        show_brightness_control: true
+        show_color_control: true
+        use_light_color: false
+        collapsible_controls: true
+        show_color_temp_control: true
+        card_mod:
+          style: |
+            ha-card:active {
+              transform: scale(0.975);
+              transition: 0s;
+            }
