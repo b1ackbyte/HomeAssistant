@@ -1,0 +1,491 @@
+type: custom:stack-in-card
+cards:
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: conditional
+        conditions:
+          - entity: climate.bt_kuche
+            state_not: 'off'
+      - type: template
+        entity: climate.bt_kuche
+        icon_color: >-
+          {% set status = state_attr('climate.bt_kuche','hvac_action') %} {% if
+          status == 'heating' %} red {% else %} grey {% endif %}
+        icon: mdi:heat-wave
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+      - type: template
+        icon: |-
+          {% if is_state('binary_sensor.bewegungsmelder_kuche_bewegung','on') %}
+            mdi:motion-sensor
+          {% else %}
+            mdi:motion-sensor-off
+          {% endif %}
+        icon_color: >-
+          {% if is_state('binary_sensor.bewegungsmelder_kuche_bewegung','on') %}
+            green
+          {% elif is_state('binary_sensor.bewegungsmelder_kuche_bewegung','off')
+          %}
+            grey
+          {% else %}
+            disabled
+          {% endif%}
+      - type: entity
+        entity: sensor.bewegungsmelder_kuche_beleuchtungsstarke
+        content: '{{ states(entity) }} {{ state_attr(entity, "unit_of_measurement") }}'
+        icon: mdi:brightness-5
+        icon_color: ''
+        tap_action:
+          action: none
+        use_entity_picture: false
+        card_mod:
+          style: |
+            ha-card {
+                color:
+                  {% if states(config.entity) | int <= 5 %} 
+                    grey
+                  {% elif states(config.entity) | int <= 25 %}
+                    #FFFF00
+                  {% elif states(config.entity) | int <= 50 %}
+                    #FFD700
+                  {% elif states(config.entity) | int <= 80 %}
+                    #FFF700
+                  {% elif states(config.entity) | int <= 100 %}
+                    #FFFF99
+                  {% elif states(config.entity) | int <= 150 %}
+                    #FFC300
+                  {% elif states(config.entity) | int <= 250 %}
+                    #FFA500
+                  {% elif states(config.entity) | int <= 350 %}
+                    #FF7F50
+                  {% elif states(config.entity) | int <= 400 %}
+                    #FF6347
+                  {% elif states(config.entity) | int <= 450 %}
+                    #FF5733
+                  {% elif states(config.entity) | int <= 500 %}
+                    #FF4500
+                  {% elif states(config.entity) | int <= 550 %}
+                    #FF0000
+                  {% endif %}
+      - type: entity
+        icon: mdi:thermometer
+        icon_color: orange
+        use_entity_picture: false
+        content: n/a
+        entity: sensor.temperatur_kuche_temperatur
+      - type: entity
+        icon: mdi:water-percent
+        icon_color: light-blue
+        use_entity_picture: false
+        content: n/a
+        entity: sensor.temperatur_kuche_luftfeuchtigkeit
+    alignment: end
+    card_mod:
+      style: |
+        ha-card {
+        --chip-box-shadow: none;
+        --chip-background: none;
+        --chip-spacing: 0;
+        padding-top: 5px;
+        }
+  - type: custom:mushroom-template-card
+    primary: ‎ ‎ Küche
+    icon: mdi:silverware-variant
+    tap_action:
+      action: none
+    card_mod:
+      style:
+        mushroom-state-info$: |
+          .primary {
+            font-size: 20px !important;
+            position: absolute;
+            top: 0px;
+            left: 75px;
+            overflow: visible !important;
+            white-space: normal !important;
+          }
+        mushroom-shape-icon$: |
+          .shape {
+            position: relative;
+            left: -30px;
+            top: -0px;
+            height: 20px;
+            {% if is_state('light.flur', 'on') %}
+               --shape-color: rgba(var(--rgb-orange), 0.25);
+               --icon-color: rgba(var(--rgb-white), 1);
+            {% endif %}
+          }
+        .: |
+          :host {
+            --mush-icon-size: 120px;
+            --primary-text-color: #a0a0a0
+          }
+          ha-card {
+            height: 75px !important;
+          }
+  - type: custom:stack-in-card
+    cards:
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                entity: sensor.microwave
+                icon: mdi:microwave
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #ef5c48
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                entity: sensor.dishwasher
+                icon: mdi:dishwasher
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #37b4c3
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                entity: sensor.fridge
+                icon: mdi:fridge
+                icon_color: |
+                  {% if is_state(entity, 'off') %}
+                  grey
+                  {% else %}
+                  #388bff
+                  {% endif %}
+                tap_action:
+                  action: more-info
+              - type: template
+                icon: phu:echo-dot-gen-4
+                icon_color: |
+                  {% if is_state(entity, 'playing') %}
+                  #2abb7f
+                  {% elif is_state(entity, 'standby') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'idle') %}
+                  #f5cd47
+                  {% elif is_state(entity, 'paused') %}
+                  #ef5c48
+                  {% else %}
+                  grey
+                  {% endif %}
+                entity: media_player.echo_4_kuche
+                tap_action:
+                  action: more-info
+                alignment: end
+            alignment: end
+            card_mod:
+              style:
+                mushroom-template-chip:nth-child(1)$: |
+                  {% if is_state('sensor.microwave','on') %}
+                    ha-state-icon:before {
+                      content: "";
+                      position: absolute;
+                      width: 25%;
+                      height: 25%;
+                      margin: 10%;
+                      animation: cook 1s linear infinite;
+                  }
+                  @keyframes cook { 
+                    0%, 100% { background: linear-gradient(90deg, white 0%, transparent 50%, transparent 100%); }
+                    33% { background: linear-gradient(90deg, transparent 0%, white 50%, transparent 100%); }
+                    66% { background: linear-gradient(90deg, transparent 0%, transparent 50%, white 100%); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(2)$: |
+                  {% if is_state('sensor.dishwasher','on') %}
+                    ha-state-icon {
+                      animation: bounce 1.5s ease-in-out infinite, wash 1s ease-in-out infinite;
+                      transform-origin: 50% 75%;
+                  }
+                  @keyframes bounce {
+                    0%, 20%, 50%, 80%, 100% {transform: translateY(0); } 
+                    40% { transform: translateY(-1.2px) rotate(5deg); } 
+                    60% { transform: translateY(-1.1px) rotate(-4deg); } 
+                  } 
+                  @keyframes wash {
+                    50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 36% 74%, 31% 43%, 61% 40%, 71% 69%, 62% 78%, 36% 73%, 35% 100%, 100% 100%, 100% 0); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(3)$: |
+                  {% if is_state('sensor.fridge','on') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                      --shape-animation: heart 1.3s ease-out infinite both;
+                  }
+                  @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  @keyframes heart {
+                    0% { box-shadow: 0 0 0 0 rgba(var(--rgb-red), 0.2); }
+                    10% { box-shadow: 0 0 5px 5px transparent; }
+                    17% { box-shadow: 0 0 0 0 rgba(var(--rgb-red), 0.2); }
+                    33% { box-shadow: 0 0 5px 5px transparent; }
+                    60% { box-shadow: 0 0 0 0 rgba(var(--rgb-red), 0.2); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                mushroom-template-chip:nth-child(4)$: |
+                  {% if is_state('media_player.echo_4_kuche','playing') %}
+                    ha-state-icon {
+                      animation: beat 1.3s ease-out infinite both;
+                      transform-origin: 50% 60%;
+                  } @keyframes beat {
+                    0% { transform: scale(1); }
+                    10% { transform: scale(1.1); }
+                    17% { transform: scale(1.05); }
+                    33% { transform: scale(1.25); }
+                    60% { transform: scale(1); }
+                  }
+                  {% else %}
+
+                  {% endif %}
+                .: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0;
+                  }
+          - type: entities
+            entities:
+              - type: custom:fold-entity-row
+                head:
+                  type: custom:mushroom-entity-card
+                  entity: light.kuche
+                  name: Alle Lampen
+                  icon: mdi:ceiling-light-multiple
+                  icon_color: orange
+                  tap_action:
+                    action: toggle
+                padding: 0
+                entities:
+                  - type: custom:auto-entities
+                    filter:
+                      include:
+                        - group: light.kuche
+                          options:
+                            type: custom:mushroom-entity-card
+                            icon: ''
+                            icon_color: orange
+                            tap_action:
+                              action: toggle
+                    card:
+                      type: custom:layout-card
+                      cards: []
+                      layout_type: masonry
+                    sort:
+                      method: friendly_name
+                card_mod:
+                  style: |
+                    :host {
+                      --masonry-view-card-margin: -12px 8px 0px 8px; 
+                      --ha-card-border-width: 0;
+                      --ha-card-background: none;
+                      --ha-card-box-shadow: 0;
+                    }
+            card_mod:
+              style:
+                fold-entity-row$: |
+                  ha-icon {
+                    background: none !important;
+                    margin-right: 24px !important;
+                    --toggle-icon-width: 21px !important;
+                    color: rgb(var(--rgb-disabled-color));
+                  }
+                .: |
+                  .card-content {
+                    padding: 0;
+                  }
+          - type: custom:stack-in-card
+            cards:
+              - type: custom:layout-card
+                layout_type: custom:grid-layout
+                layout:
+                  grid-template-columns: auto 33px
+                  margin: '-4px -4px -8px -4px;'
+                cards: null
+              - type: custom:simple-thermostat
+                style: |
+                  ha-card {
+                    --st-spacing: 0px;
+                  }
+                  ha-card .current--value {
+                    color: #ffffff;
+                  }
+                  header {
+                    margin-bottom: 10px !important;
+                    padding-bottom: 0px !important;
+                  }
+                  ha-card .thermostat-trigger { 
+                    color: #6f6f6f;
+                  }
+                .: |
+                  ha-card {
+                  --ha-card-box-shadow: none;
+                  --ha-card-padding-top: 5px;
+                  --ha-card-background: transparent;
+                  }
+                entity: climate.bt_kuche
+                header:
+                  name: false
+                  icon: false
+                decimals: '1'
+                fallback: 'Off'
+                hide:
+                  temperature: true
+                  state: true
+                layout:
+                  mode:
+                    names: false
+                    icons: false
+                    headings: false
+                  step: row
+                step_size: '0.5'
+                control:
+                  hvac:
+                    'off': false
+                    heat: false
+                    cool: false
+                    heat_cool: false
+            card_mod:
+              style: |
+                ha-card {
+                --ha-card-box-shadow: none;
+                --ha-card-background: transparent;
+                }
+      - type: custom:simple-thermostat
+        style: |
+          ha-card {
+            --st-font-size-toggle-label: 6px
+            --st-spacing: 0px;
+            --st-default-spacing: 0px;
+            --st-mode-background: #2d2d2d;
+            margin-left: 12px;
+            margin-right: 12px;
+          }
+          ha-card .mode-item.active.off { 
+            background: #363636;
+            color: #9e9e9e;
+          }
+          ha-card .mode-item.active.heat { 
+            background: #472421;
+            color: #f44336;
+          }
+          ha-card .mode-item.active { 
+            background: #263926;
+            color: #4caf50;
+          }
+          ha-card .mode-item.active:hover { 
+            background: #363636;
+            color: #9e9e9e;
+          }
+          ha-card .mode-item:hover { 
+            background: #363636;
+            color: #9e9e9e;
+          }
+          ha-card .mode-item {
+            --st-spacing: 10px;
+            border-radius: 10px;
+          }
+          ha-card .modes {
+            grid-gap: 12px
+          }
+        entity: climate.bt_kuche
+        header: false
+        setpoints: false
+        hide:
+          temperature: true
+          state: true
+        layout:
+          mode:
+            headings: false
+            icons: true
+            names: false
+          step: row
+        control:
+          hvac:
+            'off':
+              name: Power
+            heat:
+              name: Heat
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-box-shadow: none;
+            --ha-card-padding-top: 0px;
+            --ha-card-background: transparent;
+            }
+            .mode-item:nth-child(1).active {
+              background: #575d66 !important;
+            }
+            .mode-item:nth-child(4).active {
+              background: #ff4433 !important;
+            }
+            .mode-item:nth-child(3).active {
+              background: #34cfeb !important;
+            }
+            .mode-item:nth-child(2).active {
+              background: linear-gradient(135deg, rgba(0,206,255,1) 15%, rgb(203 115 237) 50%, rgba(255,68,51,1) 85%) !important;
+            }
+      - type: custom:battery-state-card
+        entities:
+          - entity: sensor.heizung_kuche_batterie
+            name: Batterie Thermostat
+            tap_action:
+              action: none
+          - entity: sensor.temperatur_kuche_batterie
+            name: Batterie Temperatursensor
+            tap_action:
+              action: none
+          - entity: sensor.bewegungsmelder_kuche_batterie
+            name: Batterie Bewegungsmelder
+            tap_action:
+              action: none
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-box-shadow: none;
+            --ha-card-padding-top: 5px;
+            --ha-card-background: transparent;
+            }
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.temperatur_kuche_temperatur
+            name: Temperatur
+            color: '#ff33ff'
+          - entity: sensor.temperatur_kuche_luftfeuchtigkeit
+            name: Luftfeuchtigkeit
+            color: '#3399ff'
+            y_axis: secondary
+        hours_to_show: 48
+        line_width: 3
+        font_size: 50
+        animate: true
+        show:
+          name: false
+          icon: false
+          labels: true
+          state: false
+          legend: false
+          fill: fade
