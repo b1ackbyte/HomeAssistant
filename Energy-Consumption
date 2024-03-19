@@ -1,0 +1,44 @@
+type: custom:mini-graph-card
+name: Aktueller Verbrauch
+animate: true
+decimals: 0
+hours_to_show: 24
+line_width: 1
+points: false
+points_per_hour: 6
+tap_action:
+  action: none
+hold_action:
+  action: none
+entities:
+  - sensor.energy_power_all
+show:
+  labels: false
+  icon_adaptive_color: true
+  extrema: false
+  average: false
+color_thresholds:
+  - value: 1000
+    color: '#0099ff'
+  - value: 2000
+    color: '#4caf50'
+  - value: 4000
+    color: '#ff9800'
+  - value: 6000
+    color: '#f44336'
+icon: mdi:transmission-tower
+card_mod:
+  style:
+    .header.flex .icon ha-icon:
+      $: |
+        ha-svg-icon {
+          animation: blink 1s linear infinite;
+          }
+          @keyframes blink {
+            50% {opacity: 0;}
+            }
+      .: |
+        :host {
+          background: var(--card-background-color);
+          border-radius: var(--ha-card-border-radius);
+         }
