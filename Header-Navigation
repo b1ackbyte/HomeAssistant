@@ -1,0 +1,73 @@
+type: custom:mushroom-chips-card
+chips:
+  - type: template
+    icon: mdi:home-thermometer-outline
+    icon_color: red
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-home/klima
+    card_mod:
+      style: |
+        ha-card {
+          --chip-background: rgba(var(--rgb-red), 0.2);
+          justify-content: center;
+          --chip-icon-size: 36px;
+          --chip-height: 64px;
+        } 
+  - type: template
+    icon: mdi:ceiling-light-multiple
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-home/lights
+    icon_color: orange
+    card_mod:
+      style: |
+        ha-card {
+          --chip-background: rgba(var(--rgb-orange), 0.2);
+          justify-content: center;
+          --chip-icon-size: 36px;
+          --chip-height: 64px;
+        }
+  - type: template
+    icon: mdi:calendar-clock
+    icon_color: yellow
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-home/calendar
+    card_mod:
+      style: |
+        ha-card {
+          justify-content: center;
+          --chip-icon-size: 36px;
+          --chip-height: 64px;
+          --chip-background: rgba(var(--rgb-yellow), 0.2);
+        }
+  - type: template
+    icon: mdi:leaf
+    icon_color: green
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-home/misc
+    card_mod:
+      style: |
+        ha-card {
+          --chip-background: rgba(var(--rgb-green), 0.2);
+          justify-content: center;
+          --chip-icon-size: 36px;
+          --chip-height: 64px;
+        } 
+  - type: template
+    icon: mdi:lan-connect
+    icon_color: blue
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-home/internet
+    card_mod:
+      style: |
+        ha-card {
+          justify-content: center;
+          --chip-icon-size: 36px;
+          --chip-height: 64px;
+          --chip-background: rgba(var(--rgb-blue), 0.2);
+        }
+alignment: justify
