@@ -1,0 +1,12 @@
+type: custom:weather-card
+entity: weather.berlin
+hourly_forecast: false
+forecast: false
+details: true
+current: true
+card_mod:
+  style: |
+    :host {
+     background: var(--card-background-color);
+     border-radius: var(--ha-card-border-radius);
+    }
