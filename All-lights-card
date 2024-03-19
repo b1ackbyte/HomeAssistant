@@ -1,0 +1,48 @@
+type: horizontal-stack
+cards:
+  - type: custom:mushroom-title-card
+    title: Alle Lampen
+    subtitle: |-
+      {{ expand(states.light.alllights) | selectattr( 'state', 'eq','on') |
+      list | count }} von 17 eingeschaltet
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: template
+        entity: light.alllights
+        icon: |-
+          {% if is_state('light.alllights','on') %}
+            mdi:lightbulb-on
+          {% else %}
+            mdi:lightbulb-off
+          {% endif %}
+        icon_color: '{{ ''amber'' if is_state(entity, ''on'') else ''grey'' }}'
+        card_mod:
+          style: |
+            ha-card {
+              transition: all 0s;
+              --chip-icon-size: 58px;
+              --chip-height: 58px;
+              --chip-box-shadow: none;
+              --chip-background: none;
+                            }
+            ha-card:after {
+              {% set lights_on = (expand(states.light.alllights) | selectattr('state', 'eq', 'on') | list | count) %}
+              {% if lights_on > 0 %}
+                content: "{{ lights_on }}";
+              {% endif %}
+              position: absolute;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: rgb(var(--rgb-amber));
+              color: var(--card-background-color);
+              font-weight: bolder;
+              border-radius: 50%;
+              top: -2px;
+              right: 5px;
+              width: 16px;
+              height: 16px;
+              font-size: 11px;
+              transition: all 0s;
+            }
+    alignment: end
