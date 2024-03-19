@@ -1,0 +1,125 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >
+      <h2><font color= lightgrey><ha-icon icon="mdi:speedometer"></ha-icon> 
+      Speedtest</font></h2>
+    card_mod:
+      style: |
+        ha-card {
+          background: none;
+          --ha-card-box-shadow: 0px;
+          --ha-card-border-width: 0;
+        }
+  - type: tile
+    name: Server
+    icon: mdi:speedometer
+    entity: sensor.speedtest_ping
+    state_content:
+      - server_name
+      - server_country
+    color: blue
+  - type: custom:vertical-stack-in-card
+    cards:
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                entity: sensor.speedtest_download
+                icon: mdi:arrow-down
+                icon_color: '#6afff3'
+                content: |
+                  {% if is_number(states(entity)) %}
+                    {{ states(entity)|round(0) }} Mbps
+                  {% else %}
+                    Unavailable
+                  {% endif %}
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: more-info
+                double_tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { 
+                      --chip-box-shadow: none;
+                      --chip-border-width: 0;
+                      --chip-font-size: 11px;
+                      --chip-font-weight: none;
+                    }
+              - type: template
+                entity: sensor.speedtest_ping
+                icon: mdi:timer
+                icon_color: '#fff38e'
+                content: |
+                  {% if is_number(states(entity)) %}
+                    {{ states(entity) }} ms
+                  {% else %}
+                    Unavailable
+                  {% endif %}
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: more-info
+                double_tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { 
+                      --chip-box-shadow: none;
+                      --chip-border-width: 0;
+                      --chip-font-size: 11px;
+                      --chip-font-weight: none;
+                    }
+              - type: template
+                entity: sensor.speedtest_upload
+                icon: mdi:arrow-up
+                icon_color: '#bf71ff'
+                content: |
+                  {% if is_number(states(entity)) %}
+                    {{ states(entity)|round(0) }} Mbps
+                  {% else %}
+                    Unavailable
+                  {% endif %}
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: more-info
+                double_tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { 
+                      --chip-box-shadow: none;
+                      --chip-border-width: 0;
+                      --chip-font-size: 11px;
+                      --chip-font-weight: none;
+                    }      
+            alignment: center
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.speedtest_ping
+            name: Ping
+            color: '#fff38e'
+          - entity: sensor.speedtest_upload
+            name: Upload
+            color: '#bf71ff'
+          - entity: sensor.speedtest_download
+            name: Download
+            color: '#6afff3'
+            y_axis: secondary
+        height: 120
+        hours_to_show: 24
+        line_width: 2
+        font_size: 50
+        animate: true
+        show:
+          name: false
+          icon: false
+          state: false
+          legend: false
+          fill: fade
