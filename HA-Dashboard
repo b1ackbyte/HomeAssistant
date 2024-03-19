@@ -1,0 +1,319 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >
+      <h2><font color= lightgrey><ha-icon icon="mdi:home-assistant"></ha-icon> 
+      HomeAssistant</font></h2>
+    card_mod:
+      style: |
+        ha-card {
+          --ha-card-box-shadow: none;
+          --ha-card-padding-top: 5px;
+          --ha-card-background: transparent;
+        }
+  - title: ''
+    type: custom:stack-in-card
+    cards:
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: 155px auto
+          margin: '-4px -4px -8px -4px'
+        cards:
+          - type: custom:stack-in-card
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.system_monitor_processor_use
+                icon: mdi:cpu-64-bit
+                icon_color: blue
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Core
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-right: -8px;
+                    }
+              - type: custom:mushroom-entity-card
+                entity: sensor.system_monitor_memory_use_percent
+                icon: mdi:memory
+                icon_color: pink
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Memory
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-top: -8px;
+                      margin-right: -8px;
+                    }
+              - type: custom:mushroom-entity-card
+                entity: sensor.system_monitor_disk_free
+                icon: mdi:harddisk
+                icon_color: green
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Disk
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-top: -8px;
+                      margin-right: -15px;
+                    }
+              - type: custom:mushroom-entity-card
+                entity: sensor.system_monitor_processor_temperature
+                icon: mdi:thermometer
+                icon_color: orange
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Temp
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-top: -8px;
+                      margin-right: -8px;
+                    }
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-box-shadow: 0px;
+                }
+          - type: custom:apexcharts-card
+            header:
+              show: false
+            series:
+              - entity: sensor.system_monitor_processor_use
+                name: Core
+                color: rgb(33, 150, 243)
+                show:
+                  legend_value: false
+              - entity: sensor.system_monitor_memory_use_percent
+                name: Memory
+                color: rgb(233, 30, 99)
+                show:
+                  legend_value: false
+              - entity: sensor.system_monitor_disk_use_percent
+                name: Disk
+                color: rgb(76, 175, 80)
+              - entity: sensor.system_monitor_processor_temperature
+                name: Temp
+                color: rgb(255, 152, 0)
+            chart_type: radialBar
+            apex_config:
+              legend:
+                show: false
+              chart:
+                fontFamily: var(--primary-font-family)
+                height: 264x
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-box-shadow: 0px;
+                  margin-left: -8px;
+                }
+  - type: custom:mushroom-entity-card
+    entity: sensor.mariadb
+    name: Maria DB Size
+  - type: custom:stack-in-card
+    cards:
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: custom:mushroom-update-card
+            entity: update.home_assistant_core_update
+            name: HA Core
+            icon_type: entity-picture
+            icon_color: |
+              {% if is_state('update.home_assistant_core_update', 'on') %}
+              orange
+              {% else %}
+              green
+              {% endif %}
+            primary: HA Core
+            secondary: |
+              {% if is_state('update.home_assistant_core_update', 'on') %}
+              Есть обновления
+              {% else %}
+              Нет обновлений
+              {% endif %}
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                padding-bottom: 0px !important;
+                border: none !important;
+                 }
+          - type: custom:mushroom-template-card
+            entity: update.home_assistant_core_update
+            icon: mdi:package-variant-closed
+            icon_color: |
+              {% if is_state('update.home_assistant_core_update', 'on') %}
+              orange
+              {% else %}
+              green
+              {% endif %}
+            badge_color: |-
+              {% if is_state('update.home_assistant_core_update', 'on') %}
+                red
+              {% else %}
+                blue
+              {% endif %}
+            badge_icon: |-
+              {% if is_state('update.home_assistant_core_update', 'on') %}
+                mdi:help
+              {% else %}
+                mdi:check-bold
+              {% endif %}
+            primary: HA Core Version
+            secondary: >-
+              Installed v{{ state_attr('update.home_assistant_core_update',
+              'installed_version')}}
+
+              Latest v{{ state_attr('update.home_assistant_core_update',
+              'latest_version')}}
+            multiline_secondary: true
+            fill_container: true
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                padding-bottom: 0px !important;
+                border: none !important;
+                 }
+      - type: custom:mushroom-update-card
+        entity: update.home_assistant_core_update
+        show_buttons_control: true
+        card_mod:
+          style: |
+            mushroom-state-item {
+              display: none;
+            }
+            ha-card {
+              border: none !important;
+            }
+            ha-card:active {
+              transform: translateY(1.5px);
+              transition: 0s;
+              box-shadow: 0 0.5px 2px 0 rgba(0, 0, 0, 0.16);
+            }
+  - type: custom:stack-in-card
+    cards:
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: custom:mushroom-update-card
+            entity: update.home_assistant_operating_system_update
+            name: HA OS
+            icon_type: entity-picture
+            icon_color: >
+              {% if is_state('update.home_assistant_operating_system_update',
+              'on') %}
+
+              orange
+
+              {% else %}
+
+              green
+
+              {% endif %}
+            primary: HA OS
+            secondary: >
+              {% if is_state('update.home_assistant_operating_system_update',
+              'on') %}
+
+              Updates verfügbar
+
+              {% else %}
+
+              Keine Updates
+
+              {% endif %}
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                padding-bottom: 0px !important;
+                border: none !important;
+                 }
+          - type: custom:mushroom-template-card
+            entity: update.home_assistant_operating_system_update
+            icon: mdi:package-variant-closed
+            icon_color: >
+              {% if is_state('update.home_assistant_operating_system_update',
+              'on') %}
+
+              orange
+
+              {% else %}
+
+              green
+
+              {% endif %}
+            badge_color: >-
+              {% if is_state('update.home_assistant_operating_system_update',
+              'on') %}
+                red
+              {% else %}
+                blue
+              {% endif %}
+            badge_icon: >-
+              {% if is_state('update.home_assistant_operating_system_update',
+              'on') %}
+                mdi:help
+              {% else %}
+                mdi:check-bold
+              {% endif %}
+            primary: HA OS Version
+            secondary: >-
+              Installed v{{
+              state_attr('update.home_assistant_operating_system_update',
+              'installed_version')}}
+
+              Latest v{{
+              state_attr('update.home_assistant_operating_system_update',
+              'latest_version')}}
+            multiline_secondary: true
+            fill_container: true
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                padding-bottom: 0px !important;
+                border: none !important;
+                 }
+      - type: custom:mushroom-update-card
+        entity: update.home_assistant_operating_system_update
+        show_buttons_control: true
+        card_mod:
+          style: |
+            mushroom-state-item {
+              display: none;
+            }
+            ha-card {
+              border: none !important;
+            }
+            ha-card:active {
+              transform: translateY(1.5px);
+              transition: 0s;
+              box-shadow: 0 0.5px 2px 0 rgba(0, 0, 0, 0.16);
+            }
