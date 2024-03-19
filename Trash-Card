@@ -1,0 +1,59 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >
+      <h2><font color= lightgrey><ha-icon
+      icon="mdi:trash-can-outline"></ha-icon>  Müllabfuhr</font></h2>
+    card_mod:
+      style: |
+        ha-card {
+          background: none;
+          --ha-card-box-shadow: 0px;
+          --ha-card-border-width: 0;
+        }
+  - type: custom:stack-in-card
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.nachste_abholung
+        icon: mdi:trash-can
+        icon_color: blue
+        primary: Trash
+        card_mod:
+          style: |
+            ha-state-icon {
+              clip-path: inset(26% 0 0 0);
+            }
+      - type: custom:mushroom-entity-card
+        icon: mdi:trash-can
+        entity: sensor.nachste_abholung
+        icon_color: blue
+        card_mod:
+          style:
+            mushroom-shape-icon$: |
+              .shape {
+                --shape-color: none;
+                top: -5px;
+              }
+            .: |
+              ha-card {
+                width: 66px;
+                top: -66px;
+              }
+              ha-state-icon {
+                animation: lid 3s ease infinite;
+                clip-path: inset(0 0 75% 0);
+                transform-origin: 50% 25%;
+              }
+              @keyframes lid {
+                0%, 50%, 80%, 100% { transform: translateY(0); }
+                10% { transform: translateY(-5px) rotate(-37deg); }
+                20% { transform: translateY(-5px) rotate(31deg); }
+                30% { transform: translateY(-5px) rotate(-25deg); }
+                40% { transform: translateY(-5px) rotate(19deg); }
+                60% { transform: translateY(-3px); }
+              }
+    card_mod:
+      style: |
+        ha-card {
+          height: 66px;
+        }
