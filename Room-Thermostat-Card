@@ -1,0 +1,267 @@
+type: custom:stack-in-card
+cards:
+  - type: custom:layout-card
+    layout_type: masonry
+    layout: {}
+    cards:
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-chips-card
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0px;
+                    --chip-padding: 0 0.2em
+                    transition: all 0s;  
+                  }
+                alignment: end
+                chips:
+                  - type: template
+                    entity: climate.bt_arbeitszimmer
+                    icon_color: >-
+                      {% set status =
+                      state_attr('climate.bt_arbeitszimmer','hvac_action') %} {%
+                      if status == 'heating' %} red {% else %} grey {% endif %}
+                    icon: mdi:heat-wave
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --chip-box-shadow: none;
+                          --chip-background: none;
+                          --chip-spacing: 0;
+                  - type: template
+                    entity: sensor.temperatur_arbeitszimmer_temperatur
+                    icon: mdi:thermometer
+                    content: >-
+                      {{ states(entity) }} {{ state_attr(entity,
+                      "unit_of_measurement") }}
+                    tap_action:
+                      action: more-info
+                    icon_color: '#ff33ff'
+                    style: |
+                      ha-card {
+                        margin-left: 6px;
+                      }
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --chip-box-shadow: none;
+                          --chip-background: none;
+                          --chip-spacing: 0;
+                          transition: all 0s;
+                  - type: template
+                    double_tap_action:
+                      action: none
+                    content: >-
+                      {{ states(entity) }} {{ state_attr(entity,
+                      "unit_of_measurement") }}
+                    entity: sensor.temperatur_arbeitszimmer_luftfeuchtigkeit
+                    icon: mdi:water-percent
+                    icon_color: '#3399ff'
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --chip-box-shadow: none;
+                          --chip-background: none;
+                          --chip-spacing: 0;
+                          transition: all 0s;
+      - type: custom:mushroom-template-card
+        primary: ‎ ‎ Büro
+        icon: mdi:death-star-variant
+        entity: light.arbeitszimmer
+        tap_action:
+          action: none
+        icon_color: '{{ ''amber'' if is_state(entity, ''on'') }}'
+        fill_container: true
+        layout: horizontal
+        multiline_secondary: false
+        card_mod:
+          style:
+            mushroom-state-info$: |
+              .primary {
+                font-size: 20px !important;
+                position: absolute;
+                top: 0px;
+                left: 75px;
+                overflow: visible !important;
+                white-space: normal !important;
+                transition: all 0s;
+              }
+            mushroom-shape-icon$: |
+              .shape {
+                position: relative;
+                left: -30px;
+                top: -50px;
+                height: 20px;
+                {% if is_state('light.arbeitszimmer', 'on') %}
+                   --shape-color: rgba(var(--rgb-orange), 0.25);
+                   --icon-color: rgba(var(--rgb-white), 1);
+                {% endif %}
+              }
+            .: |
+              :host {
+                --mush-icon-size: 120px;
+                --primary-text-color: #a0a0a0
+              }
+
+              ha-card {
+                transition: all 0s;
+                height: 75px !important;
+              --ha-card-box-shadow: none;
+              --ha-card-background: none;
+              }
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:simple-thermostat
+            style: |
+              ha-card {
+                --st-spacing: 0px;
+              }
+              ha-card .current--value {
+                color: #ffffff;
+              }
+              header {
+                margin-bottom: 10px !important;
+                padding-bottom: 0px !important;
+              }
+              ha-card .thermostat-trigger { 
+                color: #6f6f6f;
+              }
+            entity: climate.bt_arbeitszimmer
+            header:
+              name: false
+              icon: false
+            decimals: '1'
+            fallback: 'Off'
+            hide:
+              temperature: true
+              state: true
+            layout:
+              mode:
+                names: false
+                icons: false
+                headings: false
+              step: row
+            step_size: '0.5'
+            control:
+              hvac:
+                'off': false
+                heat: false
+                cool: false
+                heat_cool: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      --ha-card-box-shadow: none;
+                      --ha-card-padding-top: 5px;
+                      --ha-card-background: none;
+                      transition: all 0s; 
+                    }
+            card_mod:
+              style: |
+                ha-card {
+                --ha-card-box-shadow: none;
+                --ha-card-padding-top: 5px;
+                --ha-card-background: transparent;
+                transition: all 0s;
+                }
+      - type: custom:simple-thermostat
+        style: |
+          ha-card {
+            --st-font-size-toggle-label: 6px
+            --st-spacing: 0px;
+            --st-default-spacing: 0px;
+            --st-mode-background: #2d2d2d;
+            margin-left: 12px;
+            margin-right: 12px;
+            transition: all 0s;  
+          }
+        entity: climate.bt_arbeitszimmer
+        header: false
+        setpoints: false
+        hide:
+          temperature: true
+          state: true
+        layout:
+          mode:
+            headings: false
+            icons: true
+            names: false
+          step: row
+        control:
+          hvac:
+            'off':
+              name: Power
+            heat:
+              name: Heat
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-box-shadow: none;
+            --ha-card-padding-top: 0px;
+            --ha-card-background: transparent;
+            }
+            .mode-item:nth-child(1).active {
+              background: #575d66 !important;
+            }
+            .mode-item:nth-child(2).active {
+              background: linear-gradient(135deg, rgba(0,206,255,1) 15%, rgb(203 115 237) 50%, rgba(255,68,51,1) 85%) !important;
+            }
+      - type: custom:battery-state-card
+        entities:
+          - entity: sensor.heizung_arbeitszimmer_batterie
+            name: Batterie Heizung
+          - entity: sensor.temperatur_arbeitszimmer_batterie
+            name: Batterie Temperatursnesor
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-box-shadow: none;
+            --ha-card-padding-top: 5px;
+            --ha-card-background: transparent;
+            }
+      - type: custom:stack-in-card
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.temperatur_arbeitszimmer_temperatur
+                name: Temperature
+                color: '#ff33ff'
+              - entity: sensor.temperatur_arbeitszimmer_luftfeuchtigkeit
+                name: Humidity
+                color: '#3399ff'
+                y_axis: secondary
+            hours_to_show: 24
+            line_width: 3
+            font_size: 50
+            animate: true
+            show:
+              name: false
+              icon: false
+              labels: true
+              state: false
+              legend: false
+              fill: fade
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-box-shadow: none;
+            --ha-card-padding-top: 5px;
+            --ha-card-background: transparent;
+            transition: all 0s;
+            }
