@@ -1,0 +1,277 @@
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: PC Mark
+        secundary: ''
+        icon: mdi:microsoft-windows
+        icon_color: |-
+          {% if states('sensor.pc_mark') == 'on' %}
+            blue
+          {% else %}
+            grey 
+          {% endif %}
+        entity: switch.wake_on_lan
+        tap_action:
+          action: toggle
+        fill_container: false
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-box-shadow: none;
+              --ha-card-padding-top: 5px;
+              --ha-card-background: transparent;
+              }
+              {% if is_state('sensor.pc_mark', 'on') %}
+              ha-state-icon
+              {animation: beat 1.3s ease-out infinite both;}
+                @keyframes beat {
+                  0% { transform: scale(1); }
+                  10% { transform: scale(1.1); }
+                  17% { transform: scale(1.05); }
+                  33% { transform: scale(1.25); }
+                  60% { transform: scale(1); }
+              }
+              {% else %}
+              {% endif %}
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: template
+            icon: mdi:lock
+            entity: button.desktop_jm6b1ud_desktop_jm6b1ud_sperren
+            tap_action:
+              action: toggle
+          - type: template
+            icon: mdi:moon-waning-crescent
+            entity: button.desktop_jm6b1ud_desktop_jm6b1ud_ruhezustand
+            tap_action:
+              action: toggle
+          - type: template
+            icon: mdi:replay
+            entity: button.desktop_jm6b1ud_desktop_jm6b1ud_neustarten
+            tap_action:
+              action: toggle
+          - type: template
+            icon: mdi:power
+            icon_color: ''
+            entity: button.desktop_jm6b1ud_desktop_jm6b1ud_herunterfahren
+            tap_action:
+              action: toggle
+            alignment: end
+        alignment: end
+        card_mod:
+          style: |
+            ha-card {
+            --chip-box-shadow: none;
+            --chip-background: none;
+            --chip-spacing: 10px;
+            padding-top: 15px;
+            }
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: sensor.pc_mark
+        state: 'on'
+    card:
+      type: vertical-stack
+      cards:
+        - type: horizontal-stack
+          cards:
+            - title: ''
+              type: custom:stack-in-card
+              cards:
+                - type: custom:layout-card
+                  layout_type: custom:grid-layout
+                  layout:
+                    grid-template-columns: 155px auto
+                    margin: '-4px -4px -8px -4px'
+                  cards:
+                    - type: custom:stack-in-card
+                      cards:
+                        - type: custom:mushroom-entity-card
+                          entity: sensor.desktop_jm6b1ud_desktop_jm6b1ud_cpulast
+                          icon: mdi:cpu-64-bit
+                          icon_color: blue
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          primary_info: name
+                          secondary_info: state
+                          name: Core
+                          card_mod:
+                            style: |
+                              ha-card {
+                                margin-right: -8px;
+                              }
+                        - type: custom:mushroom-entity-card
+                          entity: sensor.pcmark_pcmark_speichernutzung
+                          icon: mdi:memory
+                          icon_color: pink
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          primary_info: name
+                          secondary_info: state
+                          name: Memory
+                          card_mod:
+                            style: |
+                              ha-card {
+                                margin-top: -8px;
+                                margin-right: -8px;
+                              }
+                        - type: custom:mushroom-entity-card
+                          entity: sensor.pcmark_pcmark_gpulast
+                          icon: mdi:expansion-card
+                          icon_color: green
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          primary_info: name
+                          secondary_info: state
+                          name: GPU
+                          card_mod:
+                            style: |
+                              ha-card {
+                                margin-top: -8px;
+                                margin-right: -15px;
+                              }
+                        - type: custom:mushroom-entity-card
+                          entity: sensor.pcmark_pcmark_cputemp
+                          icon: mdi:thermometer
+                          icon_color: orange
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          primary_info: name
+                          secondary_info: state
+                          name: Temp
+                          card_mod:
+                            style: |
+                              ha-card {
+                                margin-top: -8px;
+                                margin-right: -8px;
+                              }
+                      card_mod:
+                        style: |
+                          ha-card {
+                            --ha-card-box-shadow: 0px;
+                          }
+                    - type: custom:apexcharts-card
+                      header:
+                        show: false
+                      series:
+                        - entity: sensor.desktop_jm6b1ud_desktop_jm6b1ud_cpulast
+                          name: Core
+                          color: rgb(33, 150, 243)
+                          show:
+                            legend_value: false
+                        - entity: sensor.pcmark_pcmark_speichernutzung
+                          name: Memory
+                          color: rgb(233, 30, 99)
+                          show:
+                            legend_value: false
+                        - entity: sensor.pcmark_pcmark_gpulast
+                          name: Disk
+                          color: rgb(76, 175, 80)
+                          show:
+                            legend_value: false
+                        - entity: sensor.pcmark_pcmark_cputemp
+                          name: Temp
+                          color: rgb(255, 152, 0)
+                          show:
+                            legend_value: false
+                      chart_type: radialBar
+                      apex_config:
+                        legend:
+                          show: false
+                        chart:
+                          fontFamily: var(--primary-font-family)
+                          height: 264x
+                      card_mod:
+                        style: |
+                          ha-card {
+                            --ha-card-box-shadow: 0px;
+                            margin-left: -8px;
+                          }
+                - type: horizontal-stack
+                  cards:
+                    - type: custom:mushroom-entity-card
+                      entity: sensor.storage_capacity_c
+                      icon: mdi:harddisk
+                      icon_color: '#FF604F'
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                    - type: custom:mushroom-entity-card
+                      entity: sensor.storage_capacity_d
+                      icon: mdi:harddisk
+                      icon_color: '#FFA500'
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                    - type: custom:mushroom-entity-card
+                      entity: sensor.storage_capacity_e
+                      icon: mdi:harddisk
+                      icon_color: '#FFD800'
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                - type: horizontal-stack
+                  cards:
+                    - type: custom:mushroom-entity-card
+                      entity: sensor.storage_capacity_f
+                      icon: mdi:harddisk
+                      icon_color: '#00D86C'
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                    - type: custom:mushroom-entity-card
+                      entity: sensor.storage_capacity_g
+                      icon: mdi:harddisk
+                      icon_color: '#00A8AA'
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                    - type: custom:mushroom-entity-card
+                      entity: sensor.storage_capacity_h
+                      icon: mdi:harddisk
+                      icon_color: '#1E8EFF'
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: sensor.pc_mark
+        state: 'off'
+    card:
+      type: vertical-stack
+      cards:
+        - type: horizontal-stack
+          cards:
+            - title: ''
+              type: custom:stack-in-card
+              cards:
+                - type: custom:stack-in-card
+                  cards:
+                    - type: markdown
+                      content: |
+                        <h3>PC Mark ist ausgeschaltet</h3>
+              card_mod:
+                style: |
+                  ha-card {
+                    transition: all 0s;
+                    height: 75px !important;
+                    --ha-card-box-shadow: none; --ha-card-background:
+                    rgba(var(--rgb-primary-text-color), 0.025); }
