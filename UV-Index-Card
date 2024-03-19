@@ -1,0 +1,64 @@
+type: conditional
+conditions:
+  - condition: numeric_state
+    entity: sensor.home_uv_index
+    above: 0
+card:
+  type: vertical-stack
+  cards:
+    - type: markdown
+      content: >
+        <h2><font color= lightgrey><ha-icon icon="mdi:weather-sunny"></ha-icon>
+        UV Index</font></h2>
+      card_mod:
+        style: |
+          ha-card {
+            background: none;
+            --ha-card-box-shadow: 0px;
+            --ha-card-border-width: 0;
+          }
+    - type: custom:mushroom-entity-card
+      name: UV-Index
+      entity: sensor.home_uv_index
+      subtitle: Altglienicke
+      icon_color: grey
+      card_mod:
+        style: |
+          ha-state-icon {
+            animation: spin 3s linear infinite, beat 3s linear infinite;
+              transform-origin: 50% 50%;
+            {% if is_state('sensor.home_uv_index', "0") %}
+              --icon-color: grey !important;
+            {% elif is_state('sensor.home_uv_index', "1") %}
+              --icon-color: #FFFF00 !important;
+            {% elif is_state('sensor.home_uv_index', "2") %} 
+              --icon-color: #FFD700 !important;  
+            {% elif is_state('sensor.home_uv_index', "3") %} 
+              --icon-color: #FFF700 !important;  
+            {% elif is_state('sensor.home_uv_index', "4") %} 
+              --icon-color: #FFFF99 !important;  
+            {% elif is_state('sensor.home_uv_index', "5") %} 
+              --icon-color: #FFC300 !important;  
+            {% elif is_state('sensor.home_uv_index', "6") %} 
+              --icon-color: #FFA500 !important;  
+            {% elif is_state('sensor.home_uv_index', "7") %} 
+              --icon-color: #FF7F50 !important;  
+            {% elif is_state('sensor.home_uv_index', "8") %} 
+              --icon-color: #FF6347 !important;  
+            {% elif is_state('sensor.home_uv_index', "9") %} 
+              --icon-color: #FF5733 !important;  
+            {% elif is_state('sensor.home_uv_index', "10") %} 
+              --icon-color: #FF4500 !important;  
+            {% elif is_state('sensor.home_uv_index', "11") %} 
+              --icon-color: #FF0000 !important;  
+            {% endif %};      
+           }
+          @keyframes beat {
+            0% { transform: scale(1); }
+            10% { transform: scale(1.1); }
+            17% { transform: scale(1.05); }
+            33% { transform: scale(1.25); }
+            60% { transform: scale(1); }
+          }
+    - type: custom:bubble-card
+      card_type: separator
