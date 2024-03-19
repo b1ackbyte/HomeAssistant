@@ -1,0 +1,132 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >
+      <h2><font color= lightgrey><ha-icon icon="mdi:download"></ha-icon> 
+      SABnzbd</font></h2>
+    card_mod:
+      style: |
+        ha-card {
+          background: none;
+          --ha-card-box-shadow: 0px;
+          --ha-card-border-width: 0;
+        }
+  - type: custom:stack-in-card
+    title: ''
+    cards:
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: 155px auto
+          margin: '-4px -4px -8px -4px'
+        cards:
+          - type: custom:stack-in-card
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.sabnzbd_anzahl_der_warteschlangen
+                icon: mdi:cube-send
+                icon_color: blue
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Queue
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-right: -8px;
+                    }
+              - type: custom:mushroom-entity-card
+                entity: sensor.sabnzbd_geschwindigkeit
+                icon: mdi:speedometer
+                icon_color: pink
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Speed
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-top: -8px;
+                      margin-right: -8px;
+                    }
+              - type: custom:mushroom-entity-card
+                entity: sensor.sabnzbd_zum_herunterladen_ubrig
+                icon: mdi:download-off-outline
+                icon_color: green
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Offen
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-top: -8px;
+                      margin-right: -15px;
+                    }
+              - type: custom:mushroom-entity-card
+                entity: sensor.sabnzbd_taglich_insgesamt
+                icon: mdi:download
+                icon_color: orange
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                primary_info: name
+                secondary_info: state
+                name: Download
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-top: -8px;
+                      margin-right: -8px;
+                    }
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-box-shadow: 0px;
+                }
+          - type: custom:apexcharts-card
+            header:
+              show: false
+            series:
+              - entity: sensor.sabnzbd_anzahl_der_warteschlangen
+                name: Warteschlange
+                color: rgb(33, 150, 243)
+                show:
+                  legend_value: false
+              - entity: sensor.sabnzbd_geschwindigkeit
+                name: Speed
+                color: rgb(233, 30, 99)
+                max: 110
+                show:
+                  legend_value: false
+              - entity: sensor.sabnzbd_zum_herunterladen_ubrig
+                name: Offen
+                color: rgb(76, 175, 80)
+                max: 800
+              - entity: sensor.sabnzbd_taglich_insgesamt
+                name: Download
+                color: rgb(255, 152, 0)
+                max: 800
+            chart_type: radialBar
+            apex_config:
+              legend:
+                show: false
+              chart:
+                fontFamily: var(--primary-font-family)
+                height: 264px
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-box-shadow: 0px;
+                  margin-left: -8px;
+                }
