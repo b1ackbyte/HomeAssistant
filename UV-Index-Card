@@ -25,7 +25,7 @@ card:
       card_mod:
         style: |
           ha-state-icon {
-            animation: spin 3s linear infinite, beat 3s linear infinite;
+            animation: sunny 8s ease-in-out infinite alternate;
               transform-origin: 50% 50%;
             {% if is_state('sensor.home_uv_index', "0") %}
               --icon-color: grey !important;
@@ -53,12 +53,11 @@ card:
               --icon-color: #FF0000 !important;  
             {% endif %};      
            }
-          @keyframes beat {
-            0% { transform: scale(1); }
-            10% { transform: scale(1.1); }
-            17% { transform: scale(1.05); }
-            33% { transform: scale(1.25); }
-            60% { transform: scale(1); }
-          }
+            @keyframes sunny {
+              70% { transform: rotate(360deg) scale(1); }
+              80% { transform: scale(1); }
+              90% { transform: scale(1.15); }
+              100% { transform: scale(1); }
+            }
     - type: custom:bubble-card
       card_type: separator
