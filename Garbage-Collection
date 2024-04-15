@@ -1,0 +1,23 @@
+# ------- Garbage Collection -------
+# next collection
+- platform: waste_collection_schedule
+  name: "Nächste Abholung"
+  value_template: '{{value.types|join(", ")}}{% if value.daysTo == 0 %} Heute{% elif value.daysTo == 1 %} morgen{% else %} in {{value.daysTo}} Tagen{% endif %}'
+# Nächste Restmüll-Abholung
+- platform: waste_collection_schedule
+  name: "Restmüll"
+  value_template: '{{value.types|join(", ")}}{% if value.daysTo == 0 %} Heute{% elif value.daysTo == 1 %} morgen{% else %} in {{value.daysTo}} Tagen{% endif %}'
+  types:
+    - Restmüll
+# Nächste Biomüll Abholung
+- platform: waste_collection_schedule
+  name: "Biotonne"
+  value_template: '{{value.types|join(", ")}}{% if value.daysTo == 0 %} Heute{% elif value.daysTo == 1 %} morgen{% else %} in {{value.daysTo}} Tagen{% endif %}'
+  types:
+    - Biotonne
+# Nächste gelber-Sack Abholung
+- platform: waste_collection_schedule
+  name: "Wertstoffe"
+  value_template: '{{value.types|join(", ")}}{% if value.daysTo == 0 %} Heute{% elif value.daysTo == 1 %} morgen{% else %} in {{value.daysTo}} Tagen{% endif %}'
+  types:
+    - Wertstoffe
