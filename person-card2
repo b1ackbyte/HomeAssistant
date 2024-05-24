@@ -1,0 +1,114 @@
+type: custom:button-card
+entity: person.mark
+variables:
+  phone_battery_level_sensor: '[[[ return states["sensor.titanic_battery_level"].state]]]'
+  phone_battery_state_sensor: '[[[ return states["sensor.titanic_battery_state"].state]]]'
+aspect_ratio: 2/1
+name: Mark
+show_entity_picture: true
+show_name: false
+hold_action:
+  action: none
+state:
+  - value: home
+    styles:
+      card:
+        - background-color: '#202124'
+      custom_fields:
+        icon:
+          - border-color: '#77c66e'
+  - value: not_home
+    styles:
+      card:
+        - background-color: '#202124'
+      custom_fields:
+        icon:
+          - border-color: deepskyblue
+styles:
+  card:
+    - background-color: '#202124'
+    - border-radius: 5%
+    - padding: 2% 5% 5% 5%
+    - color: gray
+    - font-size: 10px
+    - text-shadow: 0px 0px 0px black
+    - text-transform: capitalize
+    - justify-self: center
+    - align-content: center
+  grid:
+    - grid-template-areas: '"icon status" "icon battery" "icon wifi" "icon proximity"'
+    - grid-template-columns: 1.5fr 1fr
+    - grid-template-rows: 1fr 1fr 1fr 1fr
+    - align-content: center
+  name:
+    - font-size: 15px
+    - align-self: middle
+    - justify-self: start
+  custom_fields:
+    icon:
+      - clip-path: circle()
+      - width: 60%
+      - pointer-events: none
+      - display: grid
+      - border: 5px solid
+      - border-color: '#808080'
+      - border-radius: 500px
+      - margin: 0 0 0 0
+      - opacity: 1
+      - align-self: center
+      - justify-self: center
+    status:
+      - justify-self: start
+      - color: gray
+    battery:
+      - align-self: middle
+      - justify-self: start
+      - color: gray
+      - '--text-color-sensor': >-
+          [[[ if (variables.phone_battery_level_sensor < 35) return "#EF4F1A";
+          ]]]
+custom_fields:
+  icon: >
+    [[[ return entity === undefined ? null : `<img
+    src="${states[entity.entity_id].attributes.entity_picture}" width="100%">`;
+    ]]]
+  status: |
+    [[[
+      if (entity.state =='not_home') { 
+      return `<ha-icon icon="mdi:home-export-outline"
+        style="width: 20px; height: 20px; color: '#888888';">
+        </ha-icon><span> Unterwegs</span>`;
+      } 
+      if (entity.state =='home') { 
+      return `<ha-icon 
+        icon="mdi:home"
+        style="width: 20px; height: 20px; color: 888888;">
+        </ha-icon><span> ${entity.state}</span>`;
+      } else { 
+        if (entity.state =='[Arbeit Mark]') { 
+        return `<ha-icon icon="mdi:briefcase"
+          style="width: 20px; height: 20px; color: '#888888';">
+          </ha-icon><span> ${entity.state}</span>`;
+        }
+        else{
+        return `<ha-icon 
+          icon="mdi:map-marker-radius"
+          style="width: 20px; height: 20px; color: 888888;">
+          </ha-icon><span> ${entity.state}</span>`;
+        }
+      }
+    ]]]
+  battery: |
+    [[[
+      if (variables.phone_battery_state_sensor =='charging') { 
+        return `<ha-icon
+        icon="mdi:battery-charging-medium"
+        style="width: 20px; height: 20px; color: #888888;">
+        </ha-icon> <span><span style="color: var(--text-color-sensor);">${variables.phone_battery_level_sensor}% Batterie</span></span>`;
+      } else {
+        return `<ha-icon
+        icon="mdi:battery-medium"
+        style="width: 20px; height: 20px; color: #888888;">
+        </ha-icon> <span><span style="color: var(--text-color-sensor);">${variables.phone_battery_level_sensor}% Batterie</span></span>`;
+      }
+    ]]]
