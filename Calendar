@@ -1,0 +1,18 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >-
+      <h2><font color= lightgrey><ha-icon icon="mdi:calendar"></ha-icon>
+      Kalender</font></h2>
+    card_mod:
+      style: |
+        ha-card {
+          --ha-card-box-shadow: none;
+          --ha-card-padding-top: 5px;
+          --ha-card-background: transparent;
+          transition: all 0s;
+        }
+  - initial_view: listWeek
+    type: calendar
+    entities:
+      - calendar.deinkalender
