@@ -1,0 +1,134 @@
+type: custom:stack-in-card
+cards:
+  - type: custom:mushroom-person-card
+    entity: person.mark
+    icon_type: entity-picture
+    primary_info: state
+    secondary_info: last-changed
+    tap_action:
+      action: none
+    hold_action:
+      action: none
+    double_tap_action:
+      action: none
+    card_mod:
+      style:
+        mushroom-shape-avatar$: |
+          .picture {
+            box-shadow: 0px 0px 4px 2px
+            {% set state = states(config.entity) %}
+            {% if state == 'home' %}
+              rgba(var(--rgb-state-person-home), 0.6);
+            {% elif state == 'not_home' %}
+              rgba(var(--rgb-state-person-not-home), 0.6);
+            {% elif state == 'unknown' %}
+              rgba(var(--rgb-state-person-unknown), 0.6);
+            {% else %}
+              rgba(var(--rgb-state-person-zone), 0.6);
+            {% endif %};
+            }
+            ha-card {
+              background-color: rgba(0,0,0,0);
+              border: 0px;
+              flex-wrap: wrap;
+              align-content: flex-end !important;
+            }
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: template
+        icon: >
+          {% set battery_level = (states(entity) | int / 10) | round(0) | int *
+          10 %} {% if is_state('sensor.titanic_battery_state', 'Charging' ) %}
+            {% if battery_level > 0 %}
+              mdi:battery-charging-{{ battery_level }}
+            {% else %}
+              mdi:battery-charging-outline
+            {% endif %}
+          {% else %}
+            {% if battery_level == 100 %}
+              mdi:battery
+            {% elif battery_level > 0 %}
+              mdi:battery-{{ battery_level }}
+            {% else %}
+              mdi:battery-alert-variant-outline
+            {% endif %}
+          {% endif %}
+        icon_color: |-
+          {% set battery_level = states(entity) | int %}
+          {% if battery_level > 90 %}
+            green
+          {% elif battery_level > 60 %}
+            light-green
+          {% elif battery_level > 50 %}
+            lime
+          {% elif battery_level > 40 %}
+            yellow
+          {% elif battery_level > 30 %}
+            amber
+          {% elif battery_level > 20 %}
+            orange
+          {% elif battery_level > 10 %}
+            deep-orange
+          {% else %}
+            red
+          {% endif %}
+        content: "{{ states(entity) }} %"
+        card_mod:
+          style: |
+            @keyframes blink {
+              50% {opacity: 0;}
+            }
+            ha-card {
+              {% if  (states(config.entity) | int) < 15 %}
+                 animation: blink 1s linear infinite;
+              {% endif %}
+            }
+        tap_action:
+          action: none
+        entity: sensor.titanic_battery_level
+      - type: template
+        tap_action:
+          action: none
+        entity: sensor.titanic_sim_1
+        icon_color: |-
+          {% if is_state('sensor.titanic_connection_type', 'Cellular' ) %}
+            green
+          {% else %}
+            grey
+          {% endif %}
+        icon: |
+          {% if is_state('sensor.titanic_connection_type', 'Cellular' ) %}
+            mdi:cellphone
+          {% else %}
+            mdi:cellphone
+          {% endif %}
+      - type: template
+        tap_action:
+          action: none
+        entity: sensor.titanic_ssid
+        icon_color: |-
+          {% if is_state('sensor.titanic_connection_type', 'Wi-Fi' ) %}
+            green
+          {% else %}
+            grey
+          {% endif %}
+        icon: |
+          {% if is_state('sensor.titanic_connection_type', 'Wi-Fi' ) %}
+            mdi:wifi
+          {% else %}
+            mdi:wifi
+          {% endif %}
+    alignment: left
+    card_mod:
+      style: |
+        ha-card {
+          --chip-box-shadow: none;
+          --chip-background: none;
+          --chip-spacing: -10px;
+          padding-bottom: 20px !important;
+        }
+card_mod:
+  style: |
+    ha-card {
+      height: 102px;
+    }
