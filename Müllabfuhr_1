@@ -1,0 +1,148 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >
+      <h2><font color= lightgrey><ha-icon
+      icon="mdi:trash-can-outline"></ha-icon>  Müllabfuhr BSR/ALBA</font></h2>
+    card_mod:
+      style: |
+        ha-card {
+          background: none;
+          --ha-card-box-shadow: 0px;
+          --ha-card-border-width: 0;
+        }
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: |-
+              {{ 'Heute' if 'Heute' in states('sensor.nachste_abholung') else
+                 ('Morgen' if 'Morgen' in states('sensor.nachste_abholung') else
+                 states('sensor.nachste_abholung')|regex_findall_index('in \d+ Tagen')) }}
+            secondary: ""
+            icon: mdi:calendar
+            icon_color: |-
+              {{ 'green' if 'Heute' in states('sensor.nachste_abholung') else
+                 ('yellow' if 'Morgen' in states('sensor.nachste_abholung') else 'orange' if
+                 states('sensor.nachste_abholung')|regex_findall_index('in \d+ Tagen')) }}
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ""
+                secondary: ""
+                icon: mdi:trash-can
+                badge_color: >-
+                  {{ 'green' if 'Restmüll' in states('sensor.abholung') else
+                  'red' }}
+                badge_icon: >-
+                  {{ "mdi:check-bold" if 'Restmüll' in states('sensor.abholung')
+                  else "mdi:close" }}
+                entity: sensor.abholung
+                icon_color: >-
+                  {{ 'green' if 'Restmüll' in states('sensor.abholung') else
+                  'grey' }}
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                card_mod:
+                  style: |
+                    ha-card {
+                      position: absolute;
+                      display: flex;
+                      top: 0px;
+                      right: 90px;
+                    }
+                    mushroom-badge-icon {
+                    top: -7px;
+                    right: -5px;
+                    }
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ""
+                secondary: ""
+                icon: mdi:recycle
+                badge_color: >-
+                  {{ 'green' if 'Wertstoffe' in states('sensor.abholung') else
+                  'red' }}
+                badge_icon: >-
+                  {{ "mdi:check-bold" if 'Wertstoffe' in
+                  states('sensor.abholung') else "mdi:close" }}
+                entity: sensor.abholung
+                icon_color: >-
+                  {{ 'green' if 'Wertstoffe' in states('sensor.abholung') else
+                  'grey' }}
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                card_mod:
+                  style: |
+                    ha-card {
+                      position: absolute;
+                      display: flex;
+                      top: 0px;
+                      right: 45px;
+
+                    }
+                    mushroom-badge-icon {
+                    top: -7px;
+                    right: -5px;
+                    }
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ""
+                secondary: ""
+                icon: mdi:leaf
+                badge_color: >-
+                  {{ 'green' if 'Biotonne' in states('sensor.abholung') else
+                  'red' }}
+                badge_icon: >-
+                  {{ "mdi:check-bold" if 'Biotonne' in states('sensor.abholung')
+                  else "mdi:close" }}
+                entity: sensor.abholung
+                icon_color: >-
+                  {{ 'green' if 'Biotonne' in states('sensor.abholung') else
+                  'grey' }}
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                card_mod:
+                  style: |
+                    ha-card {
+                      position: absolute;
+                      display: flex;
+                      top: 0px;
+                      right: 0px;
+
+                    }
+                    mushroom-badge-icon {
+                    top: -7px;
+                    right: -5px;
+                    }
+            alignment: end
+    card_mod:
+      style: |
+        ha-card {
+          background: none;
+          --ha-card-box-shadow: 0px;
+        }
