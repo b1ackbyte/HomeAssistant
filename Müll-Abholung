@@ -1,0 +1,33 @@
+type: entities
+entities:
+  - entity: sensor.abholung_restmull
+    icon_color: ""
+    card_mod:
+      style: |
+        :host {
+          color: {{ 'green' if 'Restmüll' in states('sensor.abholung') else 'white' }};
+          font-weight: bold
+        }
+  - entity: sensor.abholung_wertstoffe
+    icon_color: ""
+    card_mod:
+      style: |
+        :host {
+          color: {{ 'green' if 'Wertstoffe' in states('sensor.abholung') else 'white' }};
+          font-weight: bold
+        }
+  - entity: sensor.abholung_biotonne
+    icon_color: "{{ 'green' if 'Biotonne' in states('sensor.abholung') else ('white' }}"
+    card_mod:
+      style: |
+        :host {
+          color: {{ 'green' if 'Biotonne' in states('sensor.abholung') else 'white' }};
+          font-weight: bold
+        }
+state_color: true
+card_mod:
+  style: |
+    ha-card {
+      background: none;
+        --ha-card-box-shadow: 0px;
+    }
